@@ -4,6 +4,11 @@
     <string name="name">Имя</string>
     <string name="wages">Зарплата в месяц</string>
     <string name="savingMoney">Сбережения</string>
+    <string name="home">Главный</string>
+    <string name="history">История</string>
+    <string name="new_buy">Создать</string>
+    <string name="calculator_buy">Рассчитать</string>
+    <string name="settings">Настройки</string>
     <string name="currentMoney">Накопления</string>
     <string name="login_button">Продолжить</string>
     <string name="save_button">Сохранить</string>

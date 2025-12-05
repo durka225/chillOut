@@ -41,7 +41,7 @@ fun UserProfileSetupScreen(
         modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                modifier = Modifier.padding(top = 25.dp, start = 15.dp),
+                modifier = Modifier.padding(top = 25.dp, start = 30.dp),
                 text = "Анкета",
                 fontSize = 40.sp
             )
@@ -49,7 +49,7 @@ fun UserProfileSetupScreen(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 120.dp, start = 30.dp, end = 30.dp),
+                .padding(top = 80.dp, start = 30.dp, end = 30.dp),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 15.dp
             ),
@@ -156,10 +156,10 @@ fun UserProfileSetupScreen(
             )
         }
         StyledButton(
-            onClick = {},
+            onClick = {onNavigateTo (Screen.Main)},
             containerColor = Color(0xFFFFFF11),
             contentColor = Color.Black,
-            modifier = Modifier.padding(top = 50.dp),
+            modifier = Modifier.padding(top = 60.dp),
 
         ) {
             Text(
