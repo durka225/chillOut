@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">chillOut</string>
+    <string name="username">Введите никнейм</string>
+    <string name="name">Имя</string>
+    <string name="wages">Зарплата в месяц</string>
+    <string name="savingMoney">Сбережения</string>
+    <string name="currentMoney">Накопления</string>
+    <string name="login_button">Продолжить</string>
+    <string name="save_button">Сохранить</string>
 </resources>

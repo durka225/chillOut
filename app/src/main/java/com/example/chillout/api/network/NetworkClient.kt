@@ -6,7 +6,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 
 class NetworkClient {
 
-    val BASE_URL = "http://46.8.236.26:8080/api/"
+    val BASE_URL = "http://185.96.80.30:8080/"
 
     val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
