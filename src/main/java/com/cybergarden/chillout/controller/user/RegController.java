@@ -26,4 +26,9 @@ public class RegController {
                                           @RequestHeader("username") String username) {
         return userService.newUserDetails(username, request);
     }
+
+    @GetMapping("/isUsernameAvailable")
+    public ResponseEntity<?> isUsernameAvailable(@RequestParam String username) {
+        return userService.isUsernameAvailable(username);
+    }
 }

@@ -24,6 +24,10 @@ public class UserService {
         this.userDetailsRepository = userDetailsRepository;
     }
 
+    public User getUserByUsername(String username) {
+        return userRepository.getUserByUsername(username);
+    }
+
     public ResponseEntity<?> isUsernameAvailable(String username) {
         return userRepository.findByUsername(username).isEmpty()
                 ? ResponseEntity.ok().build()
@@ -70,7 +74,8 @@ public class UserService {
                     userDetails.getName(),
                     userDetails.getWages(),
                     userDetails.getSavingMoney(),
-                    userDetails.getCurrentMoney()
+                    userDetails.getCurrentMoney(),
+                    user.getPurchases()
             ));
         } else {
             return ResponseEntity.notFound().build();

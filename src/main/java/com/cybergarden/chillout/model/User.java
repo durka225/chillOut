@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "users")
@@ -19,11 +21,16 @@ public class User {
     @Column(unique = true)
     private String username;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Purchases> purchases = new ArrayList<>();
+
     public User(String username){
         this.username = username;
+        this.purchases = new ArrayList<>();
     }
 
     public User() {
         this.username = "";
+        this.purchases = new ArrayList<>();
     }
 }
