@@ -15,10 +15,10 @@ sealed class Screen {
     data object Login: Screen()
 
     @Serializable
-    data object UserProfileSetup : Screen()
+    data object  UserProfileSetup: Screen()
 
     @Serializable
-    data object Main: Screen()
+    data object  Main: Screen()
 }
 
 @Composable
@@ -32,21 +32,19 @@ fun MainNav(
         startDestination = Screen.Login
     ){
         composable <Screen.Login> {
-            LoginScreen (
+            LoginScreen(
                 onNavigateTo = { navigateTo ->
                     navHostController.navigate(navigateTo)
                 }
             )
         }
-
         composable <Screen.UserProfileSetup> {
-            UserProfileSetupScreen (
+            UserProfileSetupScreen(
                 onNavigateTo = { navigateTo ->
                     navHostController.navigate(navigateTo)
                 }
             )
         }
-
         composable <Screen.Main> {
             MainScreen (
                 onNavigateTo = { navigateTo ->

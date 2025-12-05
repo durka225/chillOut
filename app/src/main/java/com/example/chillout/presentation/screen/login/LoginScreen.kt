@@ -106,7 +106,7 @@ fun LoginScreen(
         }
 
         StyledButton(
-            onClick = { },
+            onClick = { onNavigateTo (Screen.UserProfileSetup)},
             modifier = Modifier.padding(top = 50.dp)
         ) {
             Text(
