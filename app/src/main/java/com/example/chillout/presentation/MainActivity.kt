@@ -1,4 +1,4 @@
-package com.example.chillout
+package com.example.chillout.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.chillout.ui.theme.ChillOutTheme
+import com.example.chillout.presentation.ui.theme.ChillOutTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.example.chillout.ui.theme
+package com.example.chillout.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
