@@ -4,5 +4,5 @@ data class Purchase(
     val name: String,
     val price: Int,
     val categoryName: String,
-    val datalock: String
+    val datalock: String,
 )

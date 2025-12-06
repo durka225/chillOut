@@ -1,5 +1,6 @@
 package com.example.chillout.presentation.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -63,22 +64,32 @@ fun NewCategoryDialog(
                             .clickable(onClick = onDismiss)
                     )
                 }
-
-                OutlinedTextField(
-                    value = categoryInput,
-                    onValueChange = { categoryInput = it },
-                    shape = RoundedCornerShape(12.dp),
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent
+                        .background(Color.White),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 15.dp
                     ),
-                    placeholder = {
-                        Text(text = "Введите название категории")
-                    }
-                )
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    OutlinedTextField(
+                        value = categoryInput,
+                        onValueChange = { categoryInput = it },
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp)
+                            .background(Color.White),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Color.Transparent,
+                            unfocusedBorderColor = Color.Transparent
+                        ),
+                        placeholder = {
+                            Text(text = "Введите название категории")
+                        }
+                    )
+                }
 
                 StyledButton(
                     onClick = { if (categoryInput.isNotBlank()) onSave(categoryInput) },

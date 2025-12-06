@@ -1,6 +1,8 @@
 package com.example.chillout.presentation.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,10 +10,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,10 +27,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.chillout.presentation.screen.main.home.Purchase
+import com.example.chillout.presentation.screen.main.history.PurchaseHistory
 
 @Composable
-fun NewPurchase(purchase: Purchase) {
+fun HistoryPurchaseItem(
+    purchase: PurchaseHistory,
+    onDelete: (String) -> Unit,
+) {
     val color = when (purchase.categoryName.lowercase()) {
         "green" -> Color(0xFF7BE495)
         "blue"  -> Color(0xFF8BD3FF)
@@ -48,7 +57,8 @@ fun NewPurchase(purchase: Purchase) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Box(
                 modifier = Modifier
@@ -67,12 +77,32 @@ fun NewPurchase(purchase: Purchase) {
                     fontWeight = FontWeight.Medium
                 )
 
-                Text(
-                    text = "${purchase.price} ₽",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Gray
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "${purchase.price} ₽",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Gray
+                    )
+
+                    if (purchase.datalock != "—") {
+                        Spacer(Modifier.width(8.dp))
+                        Card(
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color(0xFF8BD3FF).copy(alpha = 0.5f)
+                            ),
+                            shape = RoundedCornerShape(4.dp)
+                        ) {
+                            Text(
+                                text = "365 дней",
+                                fontSize = 10.sp,
+                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+                            )
+                        }
+                    }
+                }
 
                 Spacer(Modifier.height(4.dp))
 
@@ -80,6 +110,20 @@ fun NewPurchase(purchase: Purchase) {
                     purchase.datalock,
                     fontSize = 12.sp,
                     color = Color.Gray
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Удалить",
+                    tint = Color.Gray,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable { onDelete(purchase.id) }
                 )
             }
         }

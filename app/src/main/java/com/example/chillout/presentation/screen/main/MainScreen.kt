@@ -1,11 +1,9 @@
 package com.example.chillout.presentation.screen.main
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
@@ -44,19 +42,19 @@ fun MainScreen (
                         name = "Костюм",
                         price = 15000,
                         categoryName = "green",
-                        datalock = "—"
+                        datalock = "—",
                     ),
                     Purchase(
                         name = "Машина",
                         price = 1_500_000,
                         categoryName = "blue",
-                        datalock = "05.12.2025"
+                        datalock = "05.12.2025",
                     ),
                     Purchase(
                         name = "Шкаф",
                         price = 25000,
                         categoryName = "red",
-                        datalock = "—"
+                        datalock = "—",
                     )
                 ))
             }
