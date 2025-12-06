@@ -1,6 +1,7 @@
 package com.example.chillout.presentation.screen.main.new_buy
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,11 +40,14 @@ fun NewBuyScreen(
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(
-                modifier = Modifier.padding(top = 25.dp, start = 30.dp),
-                text = "Добавление\nпокупки",
-                fontSize = 40.sp
-            )
+            Box() {
+                Text(
+                    modifier = Modifier.padding(top = 20.dp, start = 30.dp),
+                    text = "Добавление\nпокупки",
+                    fontSize = 40.sp,
+                    lineHeight = 40.sp
+                )
+            }
         }
 
         Card(

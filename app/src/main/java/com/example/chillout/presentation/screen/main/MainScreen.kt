@@ -15,6 +15,8 @@ import com.example.chillout.presentation.navigation.Screen
 import com.example.chillout.presentation.screen.main.calculator_buy.CalculatorBuyScreen
 import com.example.chillout.presentation.screen.main.history.HistoryScreen
 import com.example.chillout.presentation.screen.main.home.HomeScreen
+import com.example.chillout.presentation.screen.main.home.MoneyItem
+import com.example.chillout.presentation.screen.main.home.Purchase
 import com.example.chillout.presentation.screen.main.navigation.BottomNavigationBar
 import com.example.chillout.presentation.screen.main.navigation.MainScreenNavigationRoute
 import com.example.chillout.presentation.screen.main.new_buy.NewBuyScreen
@@ -37,7 +39,26 @@ fun MainScreen (
             startDestination = MainScreenNavigationRoute.Home
         ){
             composable<MainScreenNavigationRoute.Home> {
-                HomeScreen()
+                HomeScreen("Андрей", money = MoneyItem(19000,100000), purchases = listOf(
+                    Purchase(
+                        name = "Костюм",
+                        price = 15000,
+                        categoryName = "green",
+                        datalock = "—"
+                    ),
+                    Purchase(
+                        name = "Машина",
+                        price = 1_500_000,
+                        categoryName = "blue",
+                        datalock = "05.12.2025"
+                    ),
+                    Purchase(
+                        name = "Шкаф",
+                        price = 25000,
+                        categoryName = "red",
+                        datalock = "—"
+                    )
+                ))
             }
             composable<MainScreenNavigationRoute.History> {
                 HistoryScreen()

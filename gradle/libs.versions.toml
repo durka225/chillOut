@@ -13,6 +13,7 @@ runtime = "1.9.4"
 navigationCompose = "2.9.6"
 converterGson = "3.0.0"
 accompanistFlowlayout = "0.36.0"
+foundationLayout = "1.10.0"
 
 
 [libraries]
@@ -36,6 +37,7 @@ converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", versi
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 
 
 [plugins]

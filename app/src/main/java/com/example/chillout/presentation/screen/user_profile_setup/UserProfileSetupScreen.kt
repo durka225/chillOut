@@ -38,7 +38,7 @@ fun UserProfileSetupScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().padding(top = 20.dp)
         ) {
             Text(
                 modifier = Modifier.padding(top = 25.dp, start = 30.dp),
