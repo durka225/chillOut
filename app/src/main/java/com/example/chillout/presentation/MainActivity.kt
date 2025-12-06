@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.chillout.presentation.navigation.MainNav
 import com.example.chillout.presentation.ui.theme.ChillOutTheme
@@ -19,12 +20,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ChillOutTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MainContent(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                MainContent(
+                    modifier = Modifier.padding(innerPadding).fillMaxSize()
+                )
             }
         }
     }
