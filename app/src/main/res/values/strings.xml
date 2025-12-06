@@ -2,9 +2,12 @@
     <string name="app_name">chillOut</string>
     <string name="username">Введите никнейм</string>
     <string name="name">Имя</string>
+    <string name="price">Цена</string>
+    <string name="name_buy">Название</string>
     <string name="wages">Зарплата в месяц</string>
     <string name="savingMoney">Сбережения</string>
     <string name="home">Главный</string>
+    <string name="category">Категория</string>
     <string name="history">История</string>
     <string name="new_buy">Создать</string>
     <string name="calculator_buy">Рассчитать</string>
@@ -12,4 +15,5 @@
     <string name="currentMoney">Накопления</string>
     <string name="login_button">Продолжить</string>
     <string name="save_button">Сохранить</string>
+    <string name="new_button">Добавить</string>
 </resources>
