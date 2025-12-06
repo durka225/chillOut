@@ -1,6 +1,8 @@
 package com.cybergarden.chillout.controller.category;
 
+import com.cybergarden.chillout.model.User;
 import com.cybergarden.chillout.service.CategoryService;
+import com.cybergarden.chillout.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -13,21 +15,25 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryController {
 
     private final CategoryService categoryService;
+    private final UserService userService;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, UserService userService) {
         this.categoryService = categoryService;
+        this.userService = userService;
     }
 
     @PostMapping("/category/new")
     ResponseEntity<?> newCategory(
-            @RequestParam String categoryName
+            @RequestParam String categoryName,
+            @RequestHeader String username
     ) {
-        return categoryService.createCategory(categoryName);
+        return categoryService.createCategory(categoryName, username);
     }
 
     @DeleteMapping("/category/delete")
     public ResponseEntity<?> deleteCategory(
-            @RequestParam String categoryName
+            @RequestParam String categoryName,
+            @RequestHeader String username
     ) {
         return categoryService.delCategory(categoryName);
     }
@@ -51,7 +57,9 @@ public class CategoryController {
             }
     )
     @GetMapping("/category")
-    public ResponseEntity<?> getCategory() {
-        return categoryService.getCategories();
+    public ResponseEntity<?> getCategory(
+            @RequestHeader String username
+    ) {
+        return categoryService.getCategories(username);
     }
 }

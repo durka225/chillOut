@@ -26,8 +26,9 @@ public class CategoryService {
         return categoryRepository.getCategoryByName(name);
     }
 
-    public ResponseEntity<?> createCategory(String name) {
-        Category category = new Category(name);
+    public ResponseEntity<?> createCategory(String name, String username) {
+        User user = userService.getUserByUsername(username);
+        Category category = new Category(name, user);
         if (categoryRepository.getCategoryByName(name) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Category already exists");
         } else {
@@ -42,8 +43,9 @@ public class CategoryService {
         return ResponseEntity.noContent().build();
     }
 
-    public ResponseEntity<?> getCategories() {
-        List<Category> category = categoryRepository.findAll();
+    public ResponseEntity<?> getCategories(String username) {
+        User user = userService.getUserByUsername(username);
+        List<Category> category = categoryRepository.findAvailableForUser(user.getId());
         List<String> categoriesResponse = new ArrayList<>();
         category.forEach( category1 -> {
             categoriesResponse.add(category1.getName());

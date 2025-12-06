@@ -19,16 +19,31 @@ public class Category {
     @Column(unique = true)
     private String name;
 
+    @Column(name = "is_default")
+    private Boolean isDefault;
+
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Purchases> purchases = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Category() {
         this.name = "";
         this.purchases = new ArrayList<>();
     }
 
-    public Category(String name) {
+    public Category(String name, User user) {
         this.name = name;
         this.purchases = new ArrayList<>();
+        this.isDefault = false;
+        this.user = user;
+    }
+
+    public Category(String name, Boolean isDefault) {
+        this.name = name;
+        this.purchases = new ArrayList<>();
+        this.isDefault = isDefault;
     }
 }
