@@ -1,5 +1,7 @@
 package com.example.chillout.presentation.screen.login
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.chillout.R
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.chillout.App
 import com.example.chillout.presentation.navigation.Screen
 import com.example.chillout.presentation.screen.viewmodel.LoginScreenViewModel
 import com.example.chillout.presentation.ui.component.StyledButton
@@ -100,7 +103,21 @@ fun LoginScreen(
         }
 
         StyledButton(
-            onClick = { onNavigateTo (Screen.UserProfileSetup)},
+            onClick = {
+                login(viewModel.username) {
+                        ok ->
+                    App.appContext()
+                        .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
+                        .edit()
+                        .putString("username",viewModel.username)
+                        .apply()
+                    if (ok) {
+                        onNavigateTo(Screen.UserProfileSetup)
+                    } else {
+                        onNavigateTo(Screen.Main)
+                    }
+                }
+            },
             modifier = Modifier.padding(top = 50.dp)
         ) {
             Text(

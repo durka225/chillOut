@@ -1,12 +1,17 @@
 package com.example.chillout.presentation.screen.main.navigation
 
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.Add
@@ -22,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,9 +36,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.chillout.R
 
+val PrimaryColor = Color(0xFF8A2BE2)
+val OnPrimaryColor = Color.White
+val BackgroundColor = Color(0xFF1E1E1E)
+val CenterButtonColor = Color(0xFFFFD700)
+
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-
     val items = listOf(
         BottomNavItem(
             iconRes = R.drawable.home,
@@ -66,18 +76,21 @@ fun BottomNavigationBar(navController: NavController) {
         )
     )
 
-
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
     NavigationBar(
-        containerColor = Color.Black,
-        tonalElevation = 0.dp
+        containerColor = BackgroundColor,
+        tonalElevation = 8.dp,
+        modifier = Modifier.height(72.dp)
     ) {
-
         items.forEachIndexed { index, item ->
-
             val isCenter = index == 2
             val isSelected = selectedIndex == index
+
+            val scale by animateFloatAsState(
+                targetValue = if (isSelected && !isCenter) 1.2f else 1.0f,
+                animationSpec = tween(durationMillis = 300)
+            )
 
             NavigationBarItem(
                 selected = isSelected,
@@ -86,84 +99,73 @@ fun BottomNavigationBar(navController: NavController) {
                     navController.navigate(item.route)
                 },
                 icon = {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-                        Box(
-                            modifier = Modifier
-                                .height(4.dp)
-                                .width(if (isCenter) 48.dp else 40.dp)
-                                .background(
-                                    if (isSelected) Color(0xFFFFEB3B)
-                                    else Color.Transparent
-                                )
-                        )
-
-                        val size = item.iconSize
-
-                        if (isCenter) {
-
+                    if (isCenter) {
+                        CenterNavigationItem(item = item, isSelected = isSelected)
+                    } else {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                painter = if (item.iconRes != null) painterResource(item.iconRes) else painterResource(R.drawable.home),
+                                contentDescription = null,
+                                tint = if (isSelected) Color(0xFFFFFF11) else Color.White.copy(alpha = 0.6f),
+                                modifier = Modifier
+                                    .scale(scale)
+                                    .size(item.iconSize)
+                            )
+                            Spacer(Modifier.height(4.dp))
                             Box(
                                 modifier = Modifier
-                                    .padding(top = 4.dp)
-                                    .size(48.dp)
+                                    .size(4.dp)
                                     .clip(CircleShape)
-                                    .background(Color.White),
-                                contentAlignment = Alignment.Center
-                            ) {
-
-                                if (item.iconRes != null) {
-                                    Icon(
-                                        painter = painterResource(item.iconRes),
-                                        tint = Color.Black,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(size)
-                                    )
-                                } else {
-                                    Icon(
-                                        imageVector = item.vectorIcon!!,
-                                        tint = Color.Black,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(size)
-                                    )
-                                }
-                            }
-
-                        } else {
-
-                            if (item.iconRes != null) {
-                                Icon(
-                                    painter = painterResource(item.iconRes),
-                                    tint = Color.White,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(top = 8.dp)
-                                        .size(size)
-                                )
-                            } else {
-                                Icon(
-                                    imageVector = item.vectorIcon!!,
-                                    tint = Color.White,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .padding(top = 8.dp)
-                                        .size(size)
-                                )
-                            }
+                                    .background(if (isSelected) Color(0xFFFFFF11) else Color.Transparent)
+                            )
                         }
                     }
-                }
-                ,
+                },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color.White,
-                    unselectedIconColor = Color.White,
+                    selectedIconColor = Color(0xFFFFFF11),
+                    unselectedIconColor = OnPrimaryColor.copy(alpha = 0.6f),
                     indicatorColor = Color.Transparent
                 )
             )
         }
     }
 }
+
 @Composable
-@Preview (showBackground = true)
-fun MainScreenPreview(){
+fun CenterNavigationItem(item: BottomNavItem, isSelected: Boolean) {
+    val pulse by rememberInfiniteTransition(label = "Pulse").animateFloat(
+        initialValue = 1.0f,
+        targetValue = if (isSelected) 1.15f else 1.1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000),
+            repeatMode = androidx.compose.animation.core.RepeatMode.Reverse
+        ), label = "Pulse Animation"
+    )
+
+    val buttonColor = if (isSelected) Color(0xFFFFFF11) else Color.White
+    val iconColor = if (isSelected) BackgroundColor else Color.Black
+
+    Box(
+        modifier = Modifier
+            .offset(y = (-7).dp)
+            .size(64.dp)
+            .clip(CircleShape)
+            .scale(pulse)
+            .background(buttonColor),
+
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = item.vectorIcon!!,
+            tint = iconColor,
+            contentDescription = null,
+            modifier = Modifier.size(item.iconSize)
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun MainScreenPreview() {
     BottomNavigationBar(navController = rememberNavController())
 }

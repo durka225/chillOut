@@ -1,5 +1,8 @@
 package com.example.chillout.presentation.screen.user_profile_setup
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +16,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.chillout.App
 import com.example.chillout.R
 import com.example.chillout.presentation.navigation.Screen
 import com.example.chillout.presentation.screen.viewmodel.UserProfileSetupScreenViewModel
@@ -32,6 +40,12 @@ fun UserProfileSetupScreen(
     onNavigateTo: (Screen) -> Unit = {},
     viewModel: UserProfileSetupScreenViewModel = viewModel()
 ){
+    val context = LocalContext.current
+    var username by remember { mutableStateOf("") }
+    if (username.isEmpty()){
+        username = App.appContext().getSharedPreferences("local_storage", Context.MODE_PRIVATE).getString("username",null)!!
+        Log.d("UserProfileSetupScreen","$username")
+    }
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -156,7 +170,19 @@ fun UserProfileSetupScreen(
             )
         }
         StyledButton(
-            onClick = {onNavigateTo (Screen.Main)},
+            onClick = {
+                userProfileSetup(username, viewModel.name, viewModel.wages.toInt(), viewModel.savingMoney.toInt(), viewModel.currentMoney.toInt()){ ok ->
+                    if (ok) {
+                        onNavigateTo(Screen.Main)
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Что-то пошло не так",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            },
             containerColor = Color(0xFFFFFF11),
             contentColor = Color.Black,
             modifier = Modifier.padding(top = 60.dp),

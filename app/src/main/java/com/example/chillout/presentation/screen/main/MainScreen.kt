@@ -37,26 +37,7 @@ fun MainScreen (
             startDestination = MainScreenNavigationRoute.Home
         ){
             composable<MainScreenNavigationRoute.Home> {
-                HomeScreen("Андрей", money = MoneyItem(19000,100000), purchases = listOf(
-                    Purchase(
-                        name = "Костюм",
-                        price = 15000,
-                        categoryName = "green",
-                        datalock = "—",
-                    ),
-                    Purchase(
-                        name = "Машина",
-                        price = 1_500_000,
-                        categoryName = "blue",
-                        datalock = "05.12.2025",
-                    ),
-                    Purchase(
-                        name = "Шкаф",
-                        price = 25000,
-                        categoryName = "red",
-                        datalock = "—",
-                    )
-                ))
+                HomeScreen()
             }
             composable<MainScreenNavigationRoute.History> {
                 HistoryScreen()
