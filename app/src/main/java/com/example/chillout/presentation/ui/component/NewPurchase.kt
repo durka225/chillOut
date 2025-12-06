@@ -77,9 +77,3 @@ fun NewPurchase(purchase: Purchase) {
         }
     }
 }
-
-//@Composable
-//@Preview (showBackground = true)
-//fun GoalItemPreview(){
-//    GoalItem()
-//}

@@ -52,9 +52,4 @@ fun GreetingHeader(name: String, money: MoneyItem) {
         }
     }
 }
-//@Composable
-//@Preview (showBackground = true)
-//fun GreetingHeaderPreview(){
-//    GreetingHeader("Андрей",)
-//}
 

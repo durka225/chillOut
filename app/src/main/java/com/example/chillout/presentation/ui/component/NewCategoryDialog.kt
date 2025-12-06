@@ -55,7 +55,7 @@ fun NewCategoryDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.cancel), // Предполагаю, что у вас есть ic_close
+                        painter = painterResource(id = R.drawable.cancel),
                         contentDescription = "Закрыть",
                         tint = Color(0xFFE57373),
                         modifier = Modifier
