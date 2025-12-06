@@ -26,7 +26,6 @@ fun MoneyCard(title: String, amount: Int) {
             .clip(RoundedCornerShape(12.dp))
             .background(Color.White)
             .padding(16.dp)
-//            .shadow(4.dp, RoundedCornerShape(12.dp))
     ) {
         Text(title, fontSize = 14.sp, color = Color.Gray)
         Spacer(Modifier.height(20.dp))

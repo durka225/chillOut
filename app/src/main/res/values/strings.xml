@@ -9,6 +9,7 @@
     <string name="home">Главный</string>
     <string name="category">Категория</string>
     <string name="history">История</string>
+    <string name="no_category">Не нашли подходящую категорию?</string>
     <string name="new_buy">Создать</string>
     <string name="calculator_buy">Рассчитать</string>
     <string name="settings">Настройки</string>
