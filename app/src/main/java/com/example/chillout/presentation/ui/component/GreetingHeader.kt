@@ -44,7 +44,7 @@ fun GreetingHeader(name: String, money: MoneyItem) {
 
             Spacer(Modifier.height(30.dp))
 
-            Row(horizontalArrangement = Arrangement.spacedBy(40.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(70.dp)) {
                 MoneyCard(title = "Накопления", amount = money.savingMoney)
                 MoneyCard(title = "Сэкономлено", amount = money.currentMoney)
             }
