@@ -29,6 +29,7 @@ import com.example.chillout.presentation.ui.component.GreetingHeader
 import com.example.chillout.presentation.ui.component.NewPurchase
 
 val EmptyPurchaseList = emptyList<Purchase>()
+
 @Composable
 fun HomeScreen(
 ) {
@@ -45,13 +46,20 @@ fun HomeScreen(
         mutableStateOf(EmptyPurchaseList)
     }
 
-    LaunchedEffect(isProfileRequest, username) {
-        if (username.isEmpty()) {
-            username = App.appContext()
-                .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
-                .getString("username", "") ?: ""
-        }
 
+    LaunchedEffect(Unit) {
+        val storedUsername = App.appContext()
+            .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
+            .getString("username", "") ?: ""
+
+        if (storedUsername.isNotEmpty()) {
+            username = storedUsername
+        } else {
+            displayName = "Гость"
+        }
+    }
+
+    LaunchedEffect(username, isProfileRequest) {
         if (username.isNotEmpty() && !isProfileRequest) {
             isProfileRequest = true
             getProfile(username = username) { responseServer ->
@@ -60,15 +68,25 @@ fun HomeScreen(
             }
         }
     }
+
+
     LaunchedEffect(response) {
         response?.let { profile ->
-            Log.d("HomeScreen", "Response: $response")
-            displayName = response!!.name
+            Log.d("HomeScreen", "Response received and processing: $profile")
+
+            displayName = profile.name
+
             displayMoney = MoneyItem(
-                savingMoney = response!!.savingMoney,
-                currentMoney = response!!.currentMoney
+                savingMoney = profile.savingMoney,
+                currentMoney = profile.currentMoney
             )
-            purchasesState = response!!.purchases
+
+            purchasesState = profile.purchases
+
+        } ?: run {
+            if (username.isNotEmpty() && !isProfileRequest) {
+                displayName = "Ошибка загрузки"
+            }
         }
     }
 
@@ -84,7 +102,7 @@ fun HomeScreen(
 
         if (purchasesState.isEmpty()) {
             Text(
-                text = "Покупок пока нет. Добавьте первую!",
+                text = if (displayName == "Загрузка...") "Загрузка покупок..." else "Покупок пока нет. Добавьте первую!",
                 modifier = Modifier.padding(horizontal = 16.dp),
                 style = MaterialTheme.typography.bodyLarge
             )
@@ -100,5 +118,8 @@ fun HomeScreen(
 @Composable
 @Preview (showBackground = true)
 fun HomeScreenPreview(){
-    HomeScreen()
+    val dummyPurchases = listOf(
+        Purchase(name = "Костюм", price = 15000, categoryName = "green", datalock = "—"),
+        Purchase(name = "Машина", price = 1_500_000, categoryName = "blue", datalock = "05.12.2025")
+    )
 }

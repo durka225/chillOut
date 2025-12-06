@@ -39,7 +39,7 @@ fun MoneyCard(title: String, amount: Int) {
             Text(title, fontSize = 17.sp, color = Color.Gray)
             Spacer(Modifier.height(20.dp))
             Text(
-                modifier = Modifier.height(40.dp),
+                modifier = Modifier.height(45.dp),
                 text = "%,d ₽".format(amount).replace(',', ' '),
                 fontWeight = FontWeight.Bold,
                 fontSize = 22.sp

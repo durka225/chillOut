@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,7 +50,8 @@ import com.example.chillout.presentation.ui.component.StyledButton
 fun LoginScreen(
     onNavigateTo: (Screen) -> Unit = {},
     viewModel: LoginScreenViewModel = viewModel()
-){
+) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -84,14 +86,19 @@ fun LoginScreen(
                 value = viewModel.username,
                 onValueChange = viewModel::updateUsername,
                 shape = RoundedCornerShape(12.dp),
+
+                isError = viewModel.isUsernameError,
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
+                    focusedBorderColor = if (viewModel.isUsernameError) MaterialTheme.colorScheme.error else Color.Transparent,
+                    unfocusedBorderColor = if (viewModel.isUsernameError) MaterialTheme.colorScheme.error else Color.Transparent,
+                    errorBorderColor = MaterialTheme.colorScheme.error
                 ),
+
                 leadingIcon = {
                     Icon(
                         painter = rememberVectorPainter(image = Icons.Outlined.AccountCircle),
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = if (viewModel.isUsernameError) MaterialTheme.colorScheme.error else Color.Unspecified
                     )
                 },
                 placeholder = {
@@ -101,21 +108,41 @@ fun LoginScreen(
                 }
             )
         }
+        if (viewModel.isUsernameError) {
+            Text(
+                text = viewModel.errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 40.dp, top = 4.dp).fillMaxWidth()
+            )
+        }
 
         StyledButton(
             onClick = {
-                login(viewModel.username) {
-                        ok ->
-                    App.appContext()
-                        .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
-                        .edit()
-                        .putString("username",viewModel.username)
-                        .apply()
-                    if (ok) {
-                        onNavigateTo(Screen.UserProfileSetup)
-                    } else {
-                        onNavigateTo(Screen.Main)
+                if (viewModel.validateUsername()) {
+                    login(viewModel.username) { ok ->
+                        App.appContext()
+                            .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
+                            .edit()
+                            .putString("username", viewModel.username)
+                            .apply()
+                        if (ok) {
+                            onNavigateTo(Screen.UserProfileSetup)
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Ошибка входа или пользователь не найден",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            onNavigateTo(Screen.Main)
+                        }
                     }
+                } else {
+                    Toast.makeText(
+                        context,
+                        viewModel.errorMessage,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             },
             modifier = Modifier.padding(top = 50.dp)
@@ -125,7 +152,6 @@ fun LoginScreen(
                 fontSize = 19.sp
             )
         }
-
     }
 }
 @Composable

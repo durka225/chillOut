@@ -1,5 +1,8 @@
 package com.example.chillout.presentation.screen.main.new_buy
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,8 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.chillout.App
 import com.example.chillout.R
 import com.example.chillout.presentation.navigation.Screen
+import com.example.chillout.presentation.screen.user_profile_setup.userProfileSetup
 import com.example.chillout.presentation.screen.viewmodel.NewBuyScreenViewModel
 import com.example.chillout.presentation.ui.component.NewCategoryDialog
 import com.example.chillout.presentation.ui.component.StyledButton
@@ -64,6 +70,12 @@ fun NewBuyScreen(
     onNavigateTo: (Screen) -> Unit = {},
     viewModel: NewBuyScreenViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+    var username by remember { mutableStateOf("") }
+    if (username.isEmpty()){
+        username = App.appContext().getSharedPreferences("local_storage", Context.MODE_PRIVATE).getString("username",null)!!
+        Log.d("UserProfileSetupScreen","$username")
+    }
     var isExpanded by remember { mutableStateOf(false) }
     var showNewCategoryDialog by remember { mutableStateOf(false) }
     val currentCategories = mutableCategoriesState.value
@@ -207,7 +219,8 @@ fun NewBuyScreen(
         )
 
         StyledButton(
-            onClick = {onNavigateTo (Screen.Main)},
+            onClick = {
+            },
             containerColor = Color(0xFFFFFF11),
             contentColor = Color.Black,
             modifier = Modifier.padding(top = 60.dp),
