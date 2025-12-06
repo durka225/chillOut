@@ -75,6 +75,7 @@ fun AddEditRangeDialog(
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
+
                 OutlinedTextField(
                     value = minAmountInput,
                     onValueChange = { minAmountInput = it.filter { char -> char.isDigit() } },
@@ -106,11 +107,9 @@ fun AddEditRangeDialog(
                         .background(if (isMaxUnlimited) Color.Gray else Color.LightGray, RoundedCornerShape(4.dp))
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Без потолка (И т.д.)", fontSize = 14.sp)
+                    Text("Без максимальной суммы", fontSize = 14.sp)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-
-
                 Text(text = "Длительность охлаждения", modifier = Modifier.padding(bottom = 8.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -137,7 +136,6 @@ fun AddEditRangeDialog(
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-
                 StyledButton(
                     onClick = {
                         val min = minAmountInput.toIntOrNull() ?: 0

@@ -35,47 +35,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.chillout.presentation.screen.viewmodel.SettingsScreenViewModel
 import com.example.chillout.presentation.ui.component.AddEditRangeDialog
 import com.example.chillout.presentation.ui.component.CardedDropdown
 import com.example.chillout.presentation.ui.component.CoolingRangeItem
 
-val coolingRangesState = mutableStateOf(
-    listOf(
-        CoolingRange(1, 0, 15000, "1", "сутки"),
-        CoolingRange(2, 15000, 50000, "1", "неделя"),
-        CoolingRange(3, 50000, 100000, "1", "месяц"),
-        CoolingRange(4, 100000, null, "3", "месяца") // "и т.д."
-    )
-)
 
-private var nextRangeId = coolingRangesState.value.maxOfOrNull { it.id } ?: 1
-
-fun addCoolingRange(range: CoolingRange) {
-    nextRangeId++
-    coolingRangesState.value = coolingRangesState.value + range.copy(id = nextRangeId)
-    coolingRangesState.value = coolingRangesState.value.sortedBy { it.minAmount }
-}
-
-fun deleteCoolingRange(rangeId: Int) {
-    coolingRangesState.value = coolingRangesState.value.filter { it.id != rangeId }
-}
 @Composable
-fun SettingsScreen() {
-    val currentRanges = coolingRangesState.value
-
-    var selectedCategory by remember { mutableStateOf("Категория") }
-    var pollCount by remember { mutableStateOf("7") }
-    var pollPeriod by remember { mutableStateOf("дней") }
-    var selectedChannel by remember { mutableStateOf("Telegram") }
+fun SettingsScreen(
+    viewModel: SettingsScreenViewModel = viewModel()
+) {
     var showRangeDialog by remember { mutableStateOf(false) }
-
     val periodOptions = listOf("дней", "недель", "месяцев")
-
+    val categoryOptions = listOf("Транспорт", "Электроника", "Одежда")
 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF0F0F0))
             .padding(horizontal = 20.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.Start
     ) {
@@ -106,9 +83,8 @@ fun SettingsScreen() {
             }
             Spacer(modifier = Modifier.height(8.dp))
         }
-
-        items(currentRanges) { range ->
-            CoolingRangeItem(range = range, onDelete = ::deleteCoolingRange)
+        items(viewModel.coolingRanges) { range ->
+            CoolingRangeItem(range = range, onDelete = viewModel::deleteCoolingRange)
         }
 
         item {
@@ -122,19 +98,21 @@ fun SettingsScreen() {
             )
             CardedDropdown(
                 label = "Категория",
-                options = listOf("Транспорт", "Электроника", "Одежда"),
-                selectedOption = selectedCategory,
-                onOptionSelected = { selectedCategory = it }
+                options = categoryOptions,
+                selectedOption = viewModel.selectedCategory,
+                onOptionSelected = viewModel::updateSelectedCategory
             )
 
             Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(vertical = 16.dp))
         }
+
         item {
             Text(
                 text = "Настройка уведомлений",
                 fontSize = 18.sp,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
+
             Text(
                 text = "Частота опроса",
                 fontSize = 16.sp,
@@ -153,8 +131,8 @@ fun SettingsScreen() {
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     OutlinedTextField(
-                        value = pollCount,
-                        onValueChange = { pollCount = it.filter { char -> char.isDigit() } },
+                        value = viewModel.pollCount,
+                        onValueChange = viewModel::updatePollCount,
                         label = { Text("Кол-во") },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(12.dp),
@@ -169,13 +147,14 @@ fun SettingsScreen() {
                     CardedDropdown(
                         label = "Период",
                         options = periodOptions,
-                        selectedOption = pollPeriod,
-                        onOptionSelected = { pollPeriod = it }
+                        selectedOption = viewModel.pollPeriod,
+                        onOptionSelected = viewModel::updatePollPeriod
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
+
             Text(
                 text = "Канал",
                 fontSize = 16.sp,
@@ -184,17 +163,18 @@ fun SettingsScreen() {
             CardedDropdown(
                 label = "Канал",
                 options = listOf("Telegram", "Email", "Viber"),
-                selectedOption = selectedChannel,
-                onOptionSelected = { selectedChannel = it }
+                selectedOption = viewModel.selectedChannel,
+                onOptionSelected = viewModel::updateSelectedChannel
             )
             Spacer(modifier = Modifier.height(40.dp))
         }
     }
+
     if (showRangeDialog) {
         AddEditRangeDialog(
             onDismiss = { showRangeDialog = false },
             onSave = { newRange ->
-                addCoolingRange(newRange)
+                viewModel.addCoolingRange(newRange)
                 showRangeDialog = false
             }
         )
