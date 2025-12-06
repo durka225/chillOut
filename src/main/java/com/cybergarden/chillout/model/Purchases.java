@@ -1,5 +1,6 @@
 package com.cybergarden.chillout.model;
 
+import com.cybergarden.chillout.dto.Status;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,12 +32,16 @@ public class Purchases {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     public Purchases() {
         this.name = "";
         this.cost = 0;
         this.dataLock = LocalDate.now();
         this.category = new Category();
         this.user = new User();
+        this.status = Status.COOLING;
     }
 
     public Purchases(
@@ -44,12 +49,14 @@ public class Purchases {
             Integer cost,
             LocalDate dataLock,
             Category category,
-            User user
+            User user,
+            Status status
     ) {
         this.name = name;
         this.cost = cost;
         this.dataLock = dataLock;
         this.category = category;
         this.user = user;
+        this.status = status;
     }
 }

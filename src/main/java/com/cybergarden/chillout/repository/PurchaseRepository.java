@@ -13,4 +13,6 @@ public interface PurchaseRepository extends JpaRepository<Purchases, UUID> {
     Object getPurchasesByUser(User user);
 
     List<Purchases> findPurchasesByUser(User user);
+
+    Purchases getPurchasesById(UUID id);
 }

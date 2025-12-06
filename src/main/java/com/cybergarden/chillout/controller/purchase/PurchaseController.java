@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping
 public class PurchaseController {
@@ -54,5 +56,22 @@ public class PurchaseController {
             @RequestHeader("username") String username
     ) {
         return purchaseService.getPurchase(username);
+    }
+
+    @DeleteMapping("/purchase/delete")
+    public ResponseEntity<?> deletePurchase(
+            @RequestParam UUID uuid,
+            @RequestHeader("username") String username
+    ) {
+        return purchaseService.delPurchase(uuid, username);
+    }
+
+    @PutMapping("/purchase/switchStatus")
+    public ResponseEntity<?> switchStatus(
+            @RequestParam UUID uuid,
+            @RequestParam String status,
+            @RequestHeader("username") String username
+    ) {
+        return purchaseService.switchStatus(uuid, status, username);
     }
 }

@@ -6,6 +6,7 @@ public record NewPurchaseRequest(
         String name,
         Integer price,
         LocalDate dataLock,
-        String categoryName
+        String categoryName,
+        String status
 ) {
 }

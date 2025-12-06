@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record PurchaseResponse (
+        String uuid,
         String name,
         Integer price,
         String categoryName,
