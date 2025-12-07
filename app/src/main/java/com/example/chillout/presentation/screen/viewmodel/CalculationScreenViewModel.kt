@@ -12,9 +12,9 @@ class CalculationScreenViewModel : ViewModel() {
 
     var purchaseName by mutableStateOf("Машина")
         private set
-    var coolingPeriodDays by mutableStateOf(365)
+    var coolingPeriodDays by mutableStateOf(0)
         private set
-    var daysToPurchase by mutableStateOf(330)
+    var daysToPurchase by mutableStateOf(0)
         private set
 
     var isDeferred by mutableStateOf(false)
@@ -24,16 +24,31 @@ class CalculationScreenViewModel : ViewModel() {
         isDeferred = isDeferredNow
         if (isDeferred) {
             daysToPurchase += 30
-        } else {
-            daysToPurchase -= 30
         }
     }
-    fun loadPurchaseData(purchaseId: String) {
-        viewModelScope.launch {
-            delay(500)
-            purchaseName = "Машина Tesla X"
-            coolingPeriodDays = 365
-            daysToPurchase = 330
+
+    fun setPurchaseData(name: String, price: Int, category: String) {
+        purchaseName = name
+    }
+
+    fun setCoolingPeriod(days: Int) {
+        coolingPeriodDays = days
+    }
+
+    fun calculateDaysToPurchase(savingMoney: Int, currentMoney: Int, price: Int) {
+        val monthlySavings = savingMoney
+        if (monthlySavings <= 0) {
+            daysToPurchase = -1
+            return
         }
+
+        val amountNeeded = price - currentMoney
+        if (amountNeeded <= 0) {
+            daysToPurchase = 0
+            return
+        }
+
+        val monthsNeeded = (amountNeeded.toDouble() / monthlySavings).toInt() + 1
+        daysToPurchase = monthsNeeded * 30
     }
 }

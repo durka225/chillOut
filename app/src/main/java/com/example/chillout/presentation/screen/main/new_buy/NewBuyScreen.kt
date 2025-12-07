@@ -288,7 +288,14 @@ if (viewModel.isLinkError) ErrorMessage(text = "Введите ссылку на
                             if (success) {
                                 Toast.makeText(context, "Покупка добавлена", Toast.LENGTH_SHORT).show()
                                 Log.d("NewBuyScreen", "Navigating to Calculation")
-                                onNavigateTo(ScreenTo.Calculation)
+                                onNavigateTo(
+                                    ScreenTo.Calculation(
+                                        purchaseName = viewModel.name,
+                                        price = viewModel.price.toInt(),
+                                        categoryName = viewModel.categoryName
+                                    )
+                                )
+
                             } else {
                                 Log.e("NewBuyScreen", "Failed to add purchase")
                                 Toast.makeText(context, "Ошибка добавления покупки", Toast.LENGTH_SHORT).show()
