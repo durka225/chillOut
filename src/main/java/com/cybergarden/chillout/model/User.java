@@ -21,8 +21,16 @@ public class User {
     @Column(unique = true)
     private String username;
 
+    private String firebaseToken;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Purchases> purchases = new ArrayList<>();
+
+    public User(String username, String firebaseToken) {
+        this.username = username;
+        this.firebaseToken = firebaseToken;
+        this.purchases = new ArrayList<>();
+    }
 
     public User(String username){
         this.username = username;

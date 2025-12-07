@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping
@@ -47,6 +44,14 @@ public class ProfileController {
             @RequestHeader("username") String username
     ) {
        return userService.getUserProfile(username);
+    }
+
+    @PutMapping("/profile/firebaseToken")
+    public ResponseEntity<?> updateFirebaseToken(
+            @RequestHeader("username") String username,
+            @RequestHeader("firebaseToken") String firebaseToken
+    ) {
+            return userService.updateFirebaseToken(username, firebaseToken);
     }
 
 }

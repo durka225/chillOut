@@ -35,11 +35,11 @@ public class UserService {
     }
 
     @Transactional
-    public synchronized ResponseEntity<?> newUsername(String username) {
+    public synchronized ResponseEntity<?> newUsername(String username, String firebaseToken) {
         if (userRepository.findByUsername(username).isPresent()) {
             return ResponseEntity.badRequest().body("Такой пользователь уже существует");
         } else {
-            userRepository.save(new User(username));
+            userRepository.save(new User(username, firebaseToken));
             return ResponseEntity.ok().build();
         }
     }
@@ -59,6 +59,18 @@ public class UserService {
                     user
             );
             userDetailsRepository.save(userDetails);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Transactional
+    public ResponseEntity<?> updateFirebaseToken(String username, String firebaseToken) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            User user = userRepository.getUserByUsername(username);
+            user.setFirebaseToken(firebaseToken);
+            userRepository.save(user);
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();

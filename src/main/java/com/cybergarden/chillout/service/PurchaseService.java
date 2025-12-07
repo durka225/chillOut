@@ -44,6 +44,7 @@ public class PurchaseService {
                         request.name(),
                         request.price(),
                         request.dataLock(),
+                        request.notificationTime(),
                         category,
                         user,
                         Status.valueOf(request.status().toUpperCase())

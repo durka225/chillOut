@@ -18,7 +18,7 @@ public class RegController {
 
     @PostMapping("/step1")
     public ResponseEntity<?> registerUsername(@RequestBody RegUsernameRequest request) {
-        return userService.newUsername(request.username());
+        return userService.newUsername(request.username(), request.firebaseToken());
     }
 
     @PostMapping("/step2")

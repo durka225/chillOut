@@ -25,6 +25,8 @@ public class Purchases {
 
     private LocalDate dataLock;
 
+    private LocalDateTime notificationTime;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
@@ -39,6 +41,7 @@ public class Purchases {
         this.name = "";
         this.cost = 0;
         this.dataLock = LocalDate.now();
+        this.notificationTime = LocalDateTime.now();
         this.category = new Category();
         this.user = new User();
         this.status = Status.COOLING;
@@ -48,6 +51,7 @@ public class Purchases {
             String name,
             Integer cost,
             LocalDate dataLock,
+            LocalDateTime notificationTime,
             Category category,
             User user,
             Status status
@@ -55,6 +59,7 @@ public class Purchases {
         this.name = name;
         this.cost = cost;
         this.dataLock = dataLock;
+        this.notificationTime = notificationTime;
         this.category = category;
         this.user = user;
         this.status = status;
