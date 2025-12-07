@@ -26,7 +26,7 @@ fun PurchasePredictionCard(days: Int) {
             .fillMaxWidth(0.7f)
             .height(90.dp),
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(2.dp, Color(0xFF98FB98)),
+        border = BorderStroke(4.dp, Color(0xFF98FB98)),
         colors = CardDefaults.cardColors(containerColor = Color(0xFF98FB98).copy(alpha = 0.2f)),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {

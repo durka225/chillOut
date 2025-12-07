@@ -51,7 +51,7 @@ fun BuyStatusBlock(
             modifier = Modifier
                 .fillMaxWidth()
                 .border(
-                    border = BorderStroke(2.dp, OuterBlueBorder),
+                    border = BorderStroke(4.dp, OuterBlueBorder),
                     shape = RoundedCornerShape(12.dp)
                 )
                 .clip(RoundedCornerShape(12.dp))
@@ -72,21 +72,26 @@ fun BuyStatusBlock(
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }
-
             Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(80.dp)
-                    .background(Color.White),
-                contentAlignment = Alignment.Center
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(80.dp)
+                        .background(Color.White),
+            contentAlignment = Alignment.Center
             ) {
+            Card(
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 15.dp
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ){
                 Surface(
                     modifier = Modifier
                         .height(40.dp)
                         .fillMaxWidth(0.9f)
                         .clickable(onClick = onDeferClick),
                     shape = RoundedCornerShape(8.dp),
-                    border = BorderStroke(1.5.dp, DeferButtonBorder),
+                    border = BorderStroke(2.dp, DeferButtonBorder),
                     color = Color.White
                 ) {
                     Box(contentAlignment = Alignment.Center) {
@@ -99,6 +104,7 @@ fun BuyStatusBlock(
                     }
                 }
             }
+        }
         }
     }
 }

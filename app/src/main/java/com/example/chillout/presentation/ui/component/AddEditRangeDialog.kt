@@ -164,7 +164,7 @@ fun AddEditRangeDialog(
 
                         if (minAmountInput.isNotBlank() && durationCount.isNotBlank() && min <= (max ?: Int.MAX_VALUE)) {
                             onSave(CoolingRange(
-                                id = 0,
+                                id = "",
                                 minAmount = min,
                                 maxAmount = max,
                                 durationCount = count,

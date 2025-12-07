@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.example.chillout.presentation.screen.main.settings.CoolingRange
 
 @Composable
-fun CoolingRangeItem(range: CoolingRange, onDelete: (Int) -> Unit) {
+fun CoolingRangeItem(range: CoolingRange, onDelete: (String) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

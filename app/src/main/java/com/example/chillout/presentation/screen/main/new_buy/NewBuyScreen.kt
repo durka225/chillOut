@@ -48,6 +48,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.chillout.App
 import com.example.chillout.R
 import com.example.chillout.presentation.navigation.Screen
+import com.example.chillout.presentation.screen.main.new_buy.navigation.ScreenTo
 import com.example.chillout.presentation.screen.viewmodel.NewBuyScreenViewModel
 import com.example.chillout.presentation.ui.component.NewCategoryDialog
 import com.example.chillout.presentation.ui.component.StyledButton
@@ -84,7 +85,7 @@ fun ErrorMessage(text: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewBuyScreen(
-    onNavigateTo: (Screen) -> Unit = {},
+    onNavigateTo: (ScreenTo) -> Unit = {},
     viewModel: NewBuyScreenViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -97,7 +98,6 @@ fun NewBuyScreen(
     var showNewCategoryDialog by remember { mutableStateOf(false) }
 
     val currentCategories by viewModel.categories.collectAsState()
-
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -145,36 +145,35 @@ fun NewBuyScreen(
         }
         if (viewModel.isNameError) ErrorMessage(text = "Введите название покупки")
 
-            /*Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 30.dp, start = 30.dp, end = 30.dp),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 15.dp
-            ),
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White),
-                value = viewModel.link,
-                onValueChange = viewModel::updateLink,
-                shape = RoundedCornerShape(12.dp),
-                isError = viewModel.isLinkError,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = if (viewModel.isLinkError) MaterialTheme.colorScheme.error else Color.Transparent,
-                    unfocusedBorderColor = if (viewModel.isLinkError) MaterialTheme.colorScheme.error else Color.Transparent,
-                    errorBorderColor = MaterialTheme.colorScheme.error
-                ),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
-                placeholder = {
-                    Text(text = stringResource(id = R.string.link))
-                }
-            )
-        }
-        if (viewModel.isLinkError) ErrorMessage(text = "Введите ссылку на товар")*/
-
+/*Card(
+modifier = Modifier
+    .fillMaxWidth()
+    .padding(top = 30.dp, start = 30.dp, end = 30.dp),
+elevation = CardDefaults.cardElevation(
+    defaultElevation = 15.dp
+),
+shape = RoundedCornerShape(12.dp)
+) {
+OutlinedTextField(
+    modifier = Modifier
+        .fillMaxWidth()
+        .background(Color.White),
+    value = viewModel.link,
+    onValueChange = viewModel::updateLink,
+    shape = RoundedCornerShape(12.dp),
+    isError = viewModel.isLinkError,
+    colors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = if (viewModel.isLinkError) MaterialTheme.colorScheme.error else Color.Transparent,
+        unfocusedBorderColor = if (viewModel.isLinkError) MaterialTheme.colorScheme.error else Color.Transparent,
+        errorBorderColor = MaterialTheme.colorScheme.error
+    ),
+    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+    placeholder = {
+        Text(text = stringResource(id = R.string.link))
+    }
+)
+}
+if (viewModel.isLinkError) ErrorMessage(text = "Введите ссылку на товар")*/
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -263,7 +262,6 @@ fun NewBuyScreen(
             }
         }
         if (viewModel.isCategoryError) ErrorMessage(text = "Выберите категорию")
-
         Text(
             text = stringResource(id = R.string.no_category),
             fontSize = 16.sp,
@@ -286,10 +284,13 @@ fun NewBuyScreen(
                         categoryName = viewModel.categoryName,
                         status = "COOLING",
                         onResult = { success ->
+                            Log.d("NewBuyScreen", "newPurchase result: $success")
                             if (success) {
                                 Toast.makeText(context, "Покупка добавлена", Toast.LENGTH_SHORT).show()
-                                onNavigateTo(Screen.Main)
+                                Log.d("NewBuyScreen", "Navigating to Calculation")
+                                onNavigateTo(ScreenTo.Calculation)
                             } else {
+                                Log.e("NewBuyScreen", "Failed to add purchase")
                                 Toast.makeText(context, "Ошибка добавления покупки", Toast.LENGTH_SHORT).show()
                             }
                         }

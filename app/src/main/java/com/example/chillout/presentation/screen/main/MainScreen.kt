@@ -14,6 +14,7 @@ import com.example.chillout.presentation.screen.main.history.HistoryScreen
 import com.example.chillout.presentation.screen.main.home.HomeScreen
 import com.example.chillout.presentation.screen.main.navigation.BottomNavigationBar
 import com.example.chillout.presentation.screen.main.navigation.MainScreenNavigationRoute
+import com.example.chillout.presentation.screen.main.new_buy.BuyAndCalculation
 import com.example.chillout.presentation.screen.main.new_buy.NewBuyScreen
 import com.example.chillout.presentation.screen.main.notification.NotificationScreen
 import com.example.chillout.presentation.screen.main.settings.SettingsScreen
@@ -41,7 +42,7 @@ fun MainScreen (
                 HistoryScreen()
             }
             composable<MainScreenNavigationRoute.NewBuy> {
-                NewBuyScreen()
+                BuyAndCalculation()
             }
             composable<MainScreenNavigationRoute.CalculatorBuy> {
                 NotificationScreen()
