@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.foundation.layout)
+    implementation(libs.firebase.messaging.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -73,8 +74,10 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.converter.scalars)
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
-    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
-    implementation("com.google.firebase:firebase-analytics")
+    //implementation(libs.firebase.bom)
+    //implementation(libs.firebase.analytics)
+    //implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation(libs.firebase.messaging)
 
 
 

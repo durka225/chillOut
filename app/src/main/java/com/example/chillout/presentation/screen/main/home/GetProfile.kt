@@ -1,42 +1,37 @@
 package com.example.chillout.presentation.screen.main.home
 
 import android.util.Log
-import com.example.chillout.api.dto.AuthRequest
-import com.example.chillout.api.dto.ProfileResponce
+import com.example.chillout.api.dto.ProfileResponse
 import com.example.chillout.api.network.NetworkClient
 import com.example.chillout.api.service.UserService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun getProfile(username: String, onResult: (ProfileResponce) -> Unit) {
+fun getProfile(username: String, onResult: (ProfileResponse?) -> Unit) {
     val retrofit = NetworkClient().retrofit
     val userService = retrofit.create(UserService::class.java)
 
-    val profileUser : Call<ProfileResponce> = userService.profileResponce(username = username)
+    val profileUser: Call<ProfileResponse> = userService.profileResponce(username = username)
 
-    profileUser.enqueue(object : Callback<ProfileResponce> {
+    profileUser.enqueue(object : Callback<ProfileResponse> {
         override fun onResponse(
-            call: Call<ProfileResponce?>,
-            response: Response<ProfileResponce?>
+            call: Call<ProfileResponse?>,
+            response: Response<ProfileResponse?>
         ) {
-            if (response.isSuccessful) {
-                onResult(ProfileResponce(
-                    response.body()!!.username,
-                    response.body()!!.name,
-                    response.body()!!.wages,
-                    response.body()!!.savingMoney,
-                    response.body()!!.currentMoney,
-                    response.body()!!.purchases
-                ))
+            if (response.isSuccessful && response.body() != null) {
+                onResult(response.body())
+            } else {
+                onResult(null)
             }
         }
 
         override fun onFailure(
-            call: Call<ProfileResponce?>,
+            call: Call<ProfileResponse?>,
             t: Throwable
         ) {
-            TODO("Not yet implemented")
+            Log.e("GetProfile", "Ошибка запроса: ${t.message}")
+            onResult(null)
         }
     })
 }

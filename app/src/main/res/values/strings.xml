@@ -6,7 +6,7 @@
     <string name="link">Ссылка на товар</string>
     <string name="name_buy">Название</string>
     <string name="wages">Зарплата в месяц</string>
-    <string name="savingMoney">Сбережения</string>
+    <string name="savingMoney">Откладываю ежемесячно</string>
     <string name="home">Главный</string>
     <string name="category">Категория</string>
     <string name="history">История</string>
@@ -15,8 +15,9 @@
     <string name="calculator_buy">Рассчитать</string>
     <string name="notif">Уведомления</string>
     <string name="settings">Настройки</string>
-    <string name="currentMoney">Накопления</string>
+    <string name="currentMoney">Мои накопления</string>
     <string name="login_button">Продолжить</string>
     <string name="save_button">Сохранить</string>
     <string name="new_button">Добавить</string>
+    <string name="exit">Выйти</string>
 </resources>

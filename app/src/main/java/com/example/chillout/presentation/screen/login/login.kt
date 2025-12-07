@@ -13,6 +13,7 @@ fun login(username : String, onResult : (Boolean) -> Unit) {
     val userService = retrofit.create(UserService::class.java)
 
     val loginUser : Call<String> = userService.authRequest(AuthRequest(username))
+    Log.d("LoginScreen", "Username for login: $username")
 
     loginUser.enqueue(object : Callback<String> {
         override fun onResponse(
@@ -20,12 +21,12 @@ fun login(username : String, onResult : (Boolean) -> Unit) {
             response: Response<String>
         ) {
             if (response.isSuccessful) {
-                Log.d("Response on server", "Ответ сервера : ${response.body()}")
-                onResult(response.isSuccessful)
+                Log.d("LoginScreen", "Ответ сервера : ${response.body()}")
+                onResult(false)
             } else {
-                Log.w("Response on server", "Код ошибки: ${response.code()}")
-                Log.w("Response on server", "Тело ошибки: ${response.message()}")
-                onResult(response.isSuccessful)
+                Log.w("LoginScreen", "Код ошибки: ${response.code()}")
+                Log.w("LoginScreen", "Тело ошибки: ${response.body()}")
+                onResult(true)
             }
         }
 

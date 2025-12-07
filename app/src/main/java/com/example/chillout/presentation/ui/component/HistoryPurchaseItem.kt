@@ -27,17 +27,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.chillout.presentation.screen.main.history.PurchaseHistory
+import com.example.chillout.presentation.screen.main.history.deletePurchase
+import com.example.chillout.presentation.screen.main.home.Purchase
 
 @Composable
 fun HistoryPurchaseItem(
-    purchase: PurchaseHistory,
-    onDelete: (String) -> Unit,
+    purchase: Purchase,
+    onDelete: (String) -> Unit
 ) {
-    val color = when (purchase.categoryName.lowercase()) {
-        "green" -> Color(0xFF7BE495)
-        "blue"  -> Color(0xFF8BD3FF)
-        "red"   -> Color(0xFFFF9B9B)
+    val color = when (purchase.status) {
+        "PURCHASED" -> Color(0xFF7BE495)
+        "COOLING"  -> Color(0xFF8BD3FF)
+        "CANCELED"   -> Color(0xFFFF9B9B)
         else    -> Color.LightGray
     }
 
@@ -87,7 +88,7 @@ fun HistoryPurchaseItem(
                         color = Color.Gray
                     )
 
-                    if (purchase.datalock != "—") {
+                    if (purchase.dataLock != "—") {
                         Spacer(Modifier.width(8.dp))
                         Card(
                             colors = CardDefaults.cardColors(
@@ -107,7 +108,7 @@ fun HistoryPurchaseItem(
                 Spacer(Modifier.height(4.dp))
 
                 Text(
-                    purchase.datalock,
+                    purchase.dataLock,
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
@@ -123,7 +124,9 @@ fun HistoryPurchaseItem(
                     tint = Color.Gray,
                     modifier = Modifier
                         .size(24.dp)
-                        .clickable { onDelete(purchase.id) }
+                        .clickable {
+                            onDelete(purchase.uuid)
+                        }
                 )
             }
         }

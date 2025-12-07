@@ -1,5 +1,6 @@
 package com.example.chillout.presentation.ui.component
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,8 +11,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,13 +32,19 @@ import androidx.compose.ui.unit.sp
 import com.example.chillout.presentation.screen.main.home.Purchase
 
 @Composable
-fun NewPurchase(purchase: Purchase) {
-    val color = when (purchase.categoryName.lowercase()) {
-        "green" -> Color(0xFF7BE495)
-        "blue"  -> Color(0xFF8BD3FF)
-        "red"   -> Color(0xFFFF9B9B)
+fun NewPurchase(
+    purchase: Purchase,
+    onBuy : () -> Unit = { },
+    onCancel : () -> Unit = { }
+) {
+    val color = when (purchase.status) {
+        "PURCHASED" -> Color(0xFF7BE495)
+        "COOLING"  -> Color(0xFF8BD3FF)
+        "CANCELED"   -> Color(0xFFFF9B9B)
         else    -> Color.LightGray
     }
+
+    Log.d("HomeScreen", "Rendering status: ${purchase.status}")
 
     Card(
         modifier = Modifier
@@ -77,9 +91,29 @@ fun NewPurchase(purchase: Purchase) {
                 Spacer(Modifier.height(4.dp))
 
                 Text(
-                    purchase.datalock,
+                    purchase.dataLock,
                     fontSize = 12.sp,
                     color = Color.Gray
+                )
+            }
+            OutlinedButton(
+                onClick = { onBuy() },
+                border = null
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Check,
+                    contentDescription = "Success Icon",
+                    tint = Color.Green
+                )
+            }
+            OutlinedButton(
+                onClick = { onCancel() },
+                border = null
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Close,
+                    contentDescription = "Success Icon",
+                    tint = Color.Red
                 )
             }
         }

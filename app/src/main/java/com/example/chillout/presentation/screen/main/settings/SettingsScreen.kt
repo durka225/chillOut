@@ -1,5 +1,6 @@
 package com.example.chillout.presentation.screen.main.settings
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ExitToApp
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -35,10 +37,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.chillout.R
 import com.example.chillout.presentation.screen.viewmodel.SettingsScreenViewModel
 import com.example.chillout.presentation.ui.component.AddEditRangeDialog
 import com.example.chillout.presentation.ui.component.CardedDropdown
@@ -60,11 +65,30 @@ fun SettingsScreen(
         horizontalAlignment = Alignment.Start
     ) {
         item {
-            Text(
-                text = "Настройки",
-                fontSize = 32.sp,
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
+            Column {
+                Row (
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Настройки",
+                        fontSize = 32.sp,
+                        //modifier = Modifier.padding(bottom = 24.dp)
+                    )
+                    Image(
+                        imageVector = Icons.AutoMirrored.Outlined.ExitToApp,
+                        contentDescription = stringResource(R.string.exit),
+                        colorFilter = ColorFilter.tint(Color.Red),
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clickable { /* Handle exit action */ }
+                    )
+
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+
         }
         item {
             Row(
@@ -135,7 +159,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(40.dp))
         }
 
-        item {
+        /*item {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -160,8 +184,7 @@ fun SettingsScreen(
                 }
             }
             Spacer(modifier = Modifier.height(40.dp))
-        }
-
+        }*/
     }
 
     if (showRangeDialog) {

@@ -111,7 +111,7 @@ fun UserProfileSetupScreen(
                         viewModel.name,
                         viewModel.wages.toInt(),
                         viewModel.savingMoney.toInt(),
-                        viewModel.currentMoney.toInt()
+                        viewModel.currentMoney.toInt(),
                     ){ ok ->
                         if (ok) {
                             onNavigateTo(Screen.Main)

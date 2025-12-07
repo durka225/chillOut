@@ -28,7 +28,7 @@ fun NotificationScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF9F6FC))
+            //.background(Color(0xFFF9F6FC))
             .padding(vertical = 16.dp, horizontal = 12.dp)
     ) {
         Text(

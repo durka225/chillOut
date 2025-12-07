@@ -53,8 +53,9 @@ fun NewCategoryDialog(
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    Text("Новая категория")
                     Icon(
                         painter = painterResource(id = R.drawable.cancel),
                         contentDescription = "Закрыть",

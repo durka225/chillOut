@@ -4,5 +4,6 @@ data class AuthUserProfileSetupRequest(
     var name: String = "",
     var wages: Int,
     var savingMoney: Int,
-    var currentMoney: Int
+    var currentMoney: Int,
+    var postpone: Int
 )

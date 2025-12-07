@@ -8,11 +8,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun userProfileSetup(username: String,name: String, wages: Int, savingMoney: Int, currentMoney: Int, onResult : (Boolean) -> Unit) {
+fun userProfileSetup(
+    username: String,
+    name: String,
+    wages: Int,
+    savingMoney: Int,
+    currentMoney: Int,
+    onResult : (Boolean) -> Unit) {
     val retrofit = NetworkClient().retrofit
     val userService = retrofit.create(UserService::class.java)
 
-    val regUserComplete : Call<String> = userService.authUserProfileSetup(AuthUserProfileSetupRequest(name, wages, savingMoney, currentMoney),username)
+    val regUserComplete : Call<String> = userService.authUserProfileSetup(AuthUserProfileSetupRequest(name, wages, 0, currentMoney, savingMoney),username)
 
     regUserComplete.enqueue(object : Callback<String> {
         override fun onResponse(

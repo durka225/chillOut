@@ -1,6 +1,7 @@
 package com.example.chillout.presentation.screen.login
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -45,6 +46,9 @@ import com.example.chillout.App
 import com.example.chillout.presentation.navigation.Screen
 import com.example.chillout.presentation.screen.viewmodel.LoginScreenViewModel
 import com.example.chillout.presentation.ui.component.StyledButton
+import com.google.firebase.messaging.FirebaseMessaging
+import androidx.core.content.edit
+import com.example.chillout.presentation.screen.main.home.getProfile
 
 
 @Composable
@@ -60,6 +64,9 @@ fun LoginScreen(
             .background(Color(0xFFFFFF11)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            Log.d("FCM", "Token: $token")
+        }
         Box(
             modifier = Modifier.padding(top = 120.dp)
         ) {
@@ -67,10 +74,9 @@ fun LoginScreen(
                 painter = painterResource(id = R.drawable.logobig),
                 contentDescription = "login image",
                 modifier = Modifier
-                    .size(240.dp)
+                    .size(280.dp)
             )
         }
-        Spacer(modifier = Modifier.height(50.dp))
 
         Card(
             modifier = Modifier
@@ -125,13 +131,23 @@ fun LoginScreen(
                     login(viewModel.username) { ok ->
                         App.appContext()
                             .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
-                            .edit()
-                            .putString("username", viewModel.username)
-                            .apply()
+                            .edit {
+                                putString("username", viewModel.username)
+                            }
                         if (ok) {
-                            onNavigateTo(Screen.UserProfileSetup)
+                            Log.d("LoginScreen", "Username ${viewModel.username} logged in")
+                            getProfile(viewModel.username) { profile ->
+                                Log.d("LoginScreen", "Fetched profile: $profile")
+                                if (profile != null) {
+                                    onNavigateTo(Screen.Main)
+                                    Log.d("LoginScreen", "Go to main screen")
+                                } else {
+                                    onNavigateTo(Screen.UserProfileSetup)
+                                    Log.d("LoginScreen", "Go to UserProfileSetup screen")
+                                }
+                            }
                         } else {
-                            onNavigateTo(Screen.Main)
+                            onNavigateTo(Screen.UserProfileSetup)
                         }
                     }
                 } else {

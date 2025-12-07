@@ -28,6 +28,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,8 +51,12 @@ import com.example.chillout.presentation.navigation.Screen
 import com.example.chillout.presentation.screen.viewmodel.NewBuyScreenViewModel
 import com.example.chillout.presentation.ui.component.NewCategoryDialog
 import com.example.chillout.presentation.ui.component.StyledButton
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Date
+import java.util.Locale
 
-val mutableCategoriesState = mutableStateOf(
+/*val mutableCategoriesState = mutableStateOf(
     listOf(
         "Транспортные средства",
         "Электроника",
@@ -64,7 +69,7 @@ fun addCategory(newCategory: String) {
     if (newCategory.isNotBlank() && newCategory !in mutableCategoriesState.value) {
         mutableCategoriesState.value = mutableCategoriesState.value + newCategory
     }
-}
+}*/
 
 @Composable
 fun ErrorMessage(text: String) {
@@ -90,7 +95,8 @@ fun NewBuyScreen(
     }
     var isExpanded by remember { mutableStateOf(false) }
     var showNewCategoryDialog by remember { mutableStateOf(false) }
-    val currentCategories = mutableCategoriesState.value
+
+    val currentCategories by viewModel.categories.collectAsState()
 
     Column(
         modifier = Modifier
@@ -139,7 +145,7 @@ fun NewBuyScreen(
         }
         if (viewModel.isNameError) ErrorMessage(text = "Введите название покупки")
 
-        Card(
+            /*Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 30.dp, start = 30.dp, end = 30.dp),
@@ -167,7 +173,7 @@ fun NewBuyScreen(
                 }
             )
         }
-        if (viewModel.isLinkError) ErrorMessage(text = "Введите ссылку на товар")
+        if (viewModel.isLinkError) ErrorMessage(text = "Введите ссылку на товар")*/
 
         Card(
             modifier = Modifier
@@ -242,9 +248,7 @@ fun NewBuyScreen(
 
                 ExposedDropdownMenu(
                     expanded = isExpanded,
-                    onDismissRequest = {
-                        isExpanded = false
-                    },
+                    onDismissRequest = { isExpanded = false },
                 ) {
                     currentCategories.forEach { selectionOption ->
                         DropdownMenuItem(
@@ -273,9 +277,23 @@ fun NewBuyScreen(
         StyledButton(
             onClick = {
                 if (viewModel.validateInputs()) {
-                    Toast.makeText(context, "Покупка добавлена (Валидация пройдена)", Toast.LENGTH_SHORT).show()
-                    Log.d("NewBuyScreen", "Name: ${viewModel.name}, Price: ${viewModel.price}")
-                    onNavigateTo(Screen.Main)
+                    newPurchase(
+                        username = username,
+                        name = viewModel.name,
+                        price = viewModel.price.toInt(),
+                        dataLock = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                            .format(Date()),
+                        categoryName = viewModel.categoryName,
+                        status = "COOLING",
+                        onResult = { success ->
+                            if (success) {
+                                Toast.makeText(context, "Покупка добавлена", Toast.LENGTH_SHORT).show()
+                                onNavigateTo(Screen.Main)
+                            } else {
+                                Toast.makeText(context, "Ошибка добавления покупки", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    )
                 } else {
                     Toast.makeText(context, "Пожалуйста, заполните все поля корректно", Toast.LENGTH_SHORT).show()
                 }
@@ -294,10 +312,13 @@ fun NewBuyScreen(
     if (showNewCategoryDialog) {
         NewCategoryDialog(
             onDismiss = { showNewCategoryDialog = false },
-            onSave = { newCategoryName ->
-                addCategory(newCategoryName)
-                viewModel.updateCategoryName(newCategoryName)
+            onSave = {
                 showNewCategoryDialog = false
+                viewModel.addCategory(it, username)
+                /*newCategoryName ->
+                viewModel.addCategory(newCategoryName)
+                viewModel.updateCategoryName(newCategoryName)
+                showNewCategoryDialog = false*/
             }
         )
     }

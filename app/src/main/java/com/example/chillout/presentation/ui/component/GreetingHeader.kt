@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,7 +25,12 @@ import com.example.chillout.presentation.screen.main.home.HomeScreen
 import com.example.chillout.presentation.screen.main.home.MoneyItem
 
 @Composable
-fun GreetingHeader(name: String, money: MoneyItem) {
+fun GreetingHeader(
+    name: String,
+    money: MoneyItem,
+    onEditClick: () -> Unit = { },
+    onAnalyticsClick: () -> Unit = { }
+) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
         shape = RoundedCornerShape(
@@ -47,14 +53,15 @@ fun GreetingHeader(name: String, money: MoneyItem) {
                 Text(
                     text = "Привет, $name!",
                     fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Spacer(Modifier.height(30.dp))
 
                 Row(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
-                    MoneyCard(title = "Накопления", amount = money.savingMoney)
-                    MoneyCard(title = "Сэкономлено", amount = money.currentMoney)
+                    MoneyCard(title = "Накопления", amount = money.savingMoney, onClick = onEditClick)
+                    MoneyCard(title = "Сэкономлено", amount = money.currentMoney, onClick = onAnalyticsClick)
                 }
                 Spacer(Modifier.height(40.dp))
             }

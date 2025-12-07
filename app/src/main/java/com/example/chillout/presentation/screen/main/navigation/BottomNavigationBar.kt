@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ExitToApp
 import androidx.compose.material.icons.sharp.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -46,7 +47,7 @@ fun BottomNavigationBar(navController: NavController) {
             iconRes = R.drawable.home,
             title = R.string.home,
             route = MainScreenNavigationRoute.Home,
-            iconSize = 24.dp
+            iconSize = 27.dp
         ),
         BottomNavItem(
             iconRes = R.drawable.history,
@@ -64,7 +65,7 @@ fun BottomNavigationBar(navController: NavController) {
             iconRes = R.drawable.notif,
             title = R.string.notif,
             route = MainScreenNavigationRoute.CalculatorBuy,
-            iconSize = 27.dp
+            iconSize = 30.dp
         ),
         BottomNavItem(
             iconRes = R.drawable.settings,
@@ -79,7 +80,7 @@ fun BottomNavigationBar(navController: NavController) {
     NavigationBar(
         containerColor = BackgroundColor,
         tonalElevation = 8.dp,
-        modifier = Modifier.height(72.dp)
+        modifier = Modifier.height(72.dp),
     ) {
         items.forEachIndexed { index, item ->
             val isCenter = index == 2
@@ -109,7 +110,7 @@ fun BottomNavigationBar(navController: NavController) {
                                     .scale(scale)
                                     .size(item.iconSize)
                             )
-                            Spacer(Modifier.height(4.dp))
+                            Spacer(Modifier.height(10.dp))
                             Box(
                                 modifier = Modifier
                                     .size(4.dp)
@@ -159,6 +160,7 @@ fun CenterNavigationItem(item: BottomNavItem, isSelected: Boolean) {
             contentDescription = null,
             modifier = Modifier.size(item.iconSize)
         )
+
     }
 }
 
