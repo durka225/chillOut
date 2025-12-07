@@ -6,6 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record RegDetailsRequest(
         String name,
         Integer wages,
-        Integer savingMoney,
+        Integer postpone,
         Integer currentMoney
 ) { }

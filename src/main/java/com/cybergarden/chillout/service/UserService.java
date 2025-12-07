@@ -1,6 +1,7 @@
 package com.cybergarden.chillout.service;
 
 import com.cybergarden.chillout.dto.ProfileUserResponse;
+import com.cybergarden.chillout.dto.PurchaseResponse;
 import com.cybergarden.chillout.dto.RegDetailsRequest;
 import com.cybergarden.chillout.model.User;
 import com.cybergarden.chillout.model.UserDetails;
@@ -9,6 +10,9 @@ import com.cybergarden.chillout.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -53,9 +57,10 @@ public class UserService {
             User user = userRepository.getUserByUsername(username);
             UserDetails userDetails = new UserDetails(
                     request.name(),
-                    request.savingMoney(),
                     request.wages(),
+                    0,
                     request.currentMoney(),
+                    request.postpone(),
                     user
             );
             userDetailsRepository.save(userDetails);
@@ -81,16 +86,67 @@ public class UserService {
         if (userRepository.findByUsername(username).isPresent()) {
             User user = userRepository.getUserByUsername(username);
             UserDetails userDetails = userDetailsRepository.getUserDetailsByUser(user);
+            List<PurchaseResponse> list = new ArrayList<>();
+            user.getPurchases().forEach(it ->
+                    list.add(new PurchaseResponse(
+                                    it.getId().toString(),
+                                    it.getName(),
+                                    it.getCost(),
+                                    it.getCategory().getName(),
+                                    it.getDataLock(),
+                                    it.getStatus()
+                            )
+                    )
+            );
             return ResponseEntity.ok().body(new ProfileUserResponse(
                     user.getUsername(),
                     userDetails.getName(),
                     userDetails.getWages(),
                     userDetails.getSavingMoney(),
                     userDetails.getCurrentMoney(),
-                    user.getPurchases()
+                    userDetails.getPostpone(),
+                    list
             ));
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @Transactional
+    public ResponseEntity<?> updateUserDetailsFields(String username, String name, Integer wages, Integer postpone) {
+        return userRepository.findByUsername(username)
+                .map(user -> {
+                    UserDetails details = userDetailsRepository.getUserDetailsByUser(user);
+                    if (details == null) {
+                        return ResponseEntity.notFound().build();
+                    }
+                    if (name != null) {
+                        details.setName(name);
+                    }
+                    if (wages != null) {
+                        details.setWages(wages);
+                    }
+                    if (postpone != null) {
+                        details.setPostpone(postpone);
+                    }
+                    userDetailsRepository.save(details);
+                    return ResponseEntity.ok().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Transactional
+    public ResponseEntity<?> updateCurrentMoney(String username, Integer currentMoney) {
+        return userRepository.findByUsername(username)
+                .map(user -> {
+                    UserDetails details = userDetailsRepository.getUserDetailsByUser(user);
+                    if (details == null) {
+                        return ResponseEntity.notFound().build();
+                    }
+                    details.setCurrentMoney(currentMoney);
+                    userDetailsRepository.save(details);
+                    return ResponseEntity.ok().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }

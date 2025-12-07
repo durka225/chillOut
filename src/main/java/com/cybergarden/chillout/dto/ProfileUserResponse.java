@@ -11,5 +11,6 @@ public record ProfileUserResponse(
         Integer wages,
         Integer savingMoney,
         Integer currentMoney,
-        List<Purchases> purchases
+        Integer postpone,
+        List<PurchaseResponse> purchases
 ) { }

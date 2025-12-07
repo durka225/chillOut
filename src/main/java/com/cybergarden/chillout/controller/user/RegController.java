@@ -16,12 +16,12 @@ public class RegController {
         this.userService = userService;
     }
 
-    @PostMapping("/step1")
+    @PostMapping("/registration/credentials")
     public ResponseEntity<?> registerUsername(@RequestBody RegUsernameRequest request) {
         return userService.newUsername(request.username(), request.firebaseToken());
     }
 
-    @PostMapping("/step2")
+    @PostMapping("/registration/personal-info")
     public ResponseEntity<?> registerUser(@RequestBody RegDetailsRequest request,
                                           @RequestHeader("username") String username) {
         return userService.newUserDetails(username, request);

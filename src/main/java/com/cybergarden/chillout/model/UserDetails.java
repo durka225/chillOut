@@ -20,6 +20,7 @@ public class UserDetails {
     private Integer wages;
     private Integer savingMoney;
     private Integer currentMoney;
+    private Integer postpone;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -30,14 +31,23 @@ public class UserDetails {
         this.wages = 0;
         this.savingMoney = 0;
         this.currentMoney = 0;
+        this.postpone = 0;
         this.user = new User();
     }
 
-    public UserDetails(String name, Integer integer, Integer wages, Integer integer1, User user) {
+    public UserDetails(
+            String name,
+            Integer wages,
+            Integer savingMoney,
+            Integer currentMoney,
+            Integer postpone,
+            User user
+    ) {
         this.name = name;
         this.wages = wages;
-        this.savingMoney = integer;
-        this.currentMoney = integer1;
+        this.postpone = postpone;
+        this.currentMoney = currentMoney;
+        this.savingMoney = savingMoney;
         this.user = user;
     }
 }

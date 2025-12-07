@@ -17,7 +17,7 @@ public class TestController {
         this.firebaseNotificationService = firebaseNotificationService;
     }
 
-    @PostMapping
+    @PostMapping("/test/notification/send")
     public void test(
             @RequestHeader("username") String username
     ) {

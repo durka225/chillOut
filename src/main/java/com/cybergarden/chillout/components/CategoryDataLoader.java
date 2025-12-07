@@ -15,7 +15,7 @@ public class CategoryDataLoader {
     @PostConstruct
     public void loadDefaults() {
         if (categoryRepository.count() == 0) {
-            String[] defaultCategories = {"Nature", "Technology", "Art", "Space", "Animals", "Abstract", "Urban", "People"};
+            String[] defaultCategories = {"Электроника", "Дом и сад", "Одежда", "Косметика", "Игрушки", "Спорт", "Авто", "Продукты"};
             for (String categoryName : defaultCategories) {
                 var category = new Category();
                 category.setName(categoryName);

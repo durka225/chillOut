@@ -6,11 +6,16 @@ import com.cybergarden.chillout.dto.Status;
 import com.cybergarden.chillout.model.Category;
 import com.cybergarden.chillout.model.Purchases;
 import com.cybergarden.chillout.model.User;
+import com.cybergarden.chillout.model.UserDetails;
 import com.cybergarden.chillout.repository.PurchaseRepository;
+import com.cybergarden.chillout.repository.UserDetailsRepository;
 import com.cybergarden.chillout.repository.UserRepository;
+import com.cybergarden.chillout.service.CategoryService;
+import com.cybergarden.chillout.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +30,18 @@ public class PurchaseService {
 
     private final CategoryService categoryService;
 
+    private final UserDetailsRepository userDetailsRepository;
+
     public PurchaseService(
             PurchaseRepository purchaseRepository,
             UserService userService,
-            CategoryService categoryService
-            ) {
+            CategoryService categoryService,
+            UserDetailsRepository userDetailsRepository
+    ) {
         this.purchaseRepository = purchaseRepository;
         this.userService = userService;
         this.categoryService = categoryService;
+        this.userDetailsRepository = userDetailsRepository;
     }
 
     public ResponseEntity<?> newPurchase(String username, NewPurchaseRequest request) {
@@ -69,7 +78,8 @@ public class PurchaseService {
                         purchase.getName(),
                         purchase.getCost(),
                         purchase.getCategory().getName(),
-                        purchase.getDataLock()
+                        purchase.getDataLock(),
+                        purchase.getStatus()
                 ));
             });
             return ResponseEntity.status(HttpStatus.OK).body(responses);
@@ -99,5 +109,61 @@ public class PurchaseService {
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
+    }
+
+    @Transactional
+    public ResponseEntity<?> cancelPurchase(UUID uuid, String username) {
+        User user = userService.getUserByUsername(username);
+        if (user == null) return ResponseEntity.notFound().build();
+
+        Purchases purchases = purchaseRepository.getPurchasesById(uuid);
+        if (purchases == null) return ResponseEntity.notFound().build();
+
+        if (!purchases.getUser().equals(user)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        if (purchases.getStatus() == Status.CANCELED || purchases.getStatus() == Status.PURCHASED) {
+            return ResponseEntity.badRequest().body("Cannot change purchase with status PURCHASED or CANCELED");
+        }
+
+        // пометить отменённой
+        purchases.setStatus(Status.CANCELED);
+        purchaseRepository.save(purchases);
+
+        // добавить стоимость в savingMoney
+        UserDetails details = userDetailsRepository.getUserDetailsByUser(user);
+        if (details == null) return ResponseEntity.notFound().build();
+        details.setSavingMoney(details.getSavingMoney() + purchases.getCost());
+        userDetailsRepository.save(details);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @Transactional
+    public ResponseEntity<?> buyPurchase(UUID uuid, String username) {
+        User user = userService.getUserByUsername(username);
+        if (user == null) return ResponseEntity.notFound().build();
+
+        Purchases purchases = purchaseRepository.getPurchasesById(uuid);
+        if (purchases == null) return ResponseEntity.notFound().build();
+
+        if (!purchases.getUser().equals(user)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        if (purchases.getStatus() == Status.CANCELED || purchases.getStatus() == Status.PURCHASED) {
+            return ResponseEntity.badRequest().body("Cannot change purchase with status PURCHASED or CANCELED");
+        }
+
+        UserDetails details = userDetailsRepository.getUserDetailsByUser(user);
+        if (details == null) return ResponseEntity.notFound().build();
+        details.setCurrentMoney(details.getCurrentMoney() - purchases.getCost());
+        userDetailsRepository.save(details);
+
+        purchases.setStatus(Status.PURCHASED);
+        purchaseRepository.save(purchases);
+
+        return ResponseEntity.ok().build();
     }
 }

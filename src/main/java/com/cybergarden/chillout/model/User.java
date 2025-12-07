@@ -1,5 +1,6 @@
 package com.cybergarden.chillout.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +25,12 @@ public class User {
     private String firebaseToken;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Purchases> purchases = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<CoolingPeriod> coolingPeriods = new ArrayList<>();
 
     public User(String username, String firebaseToken) {
         this.username = username;

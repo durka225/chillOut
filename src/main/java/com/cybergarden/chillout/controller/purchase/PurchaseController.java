@@ -20,7 +20,7 @@ public class PurchaseController {
     public PurchaseController(PurchaseService purchaseService) {
         this.purchaseService = purchaseService;
     }
-    
+
     @PostMapping("/purchase/new")
     public ResponseEntity<?> purchase(
             @RequestBody NewPurchaseRequest request,
@@ -28,6 +28,7 @@ public class PurchaseController {
     ) {
         return purchaseService.newPurchase(username, request);
     }
+
     @Operation(
             summary = "Получить все покупки пользователя",
             responses = {
@@ -73,5 +74,21 @@ public class PurchaseController {
             @RequestHeader("username") String username
     ) {
         return purchaseService.switchStatus(uuid, status, username);
+    }
+
+    @PutMapping("/purchase/cancel")
+    public ResponseEntity<?> cancelPurchase(
+            @RequestParam UUID uuid,
+            @RequestHeader("username") String username
+    ) {
+        return purchaseService.cancelPurchase(uuid, username);
+    }
+
+    @PutMapping("/purchase/buy")
+    public ResponseEntity<?> buyPurchase(
+            @RequestParam UUID uuid,
+            @RequestHeader("username") String username
+    ) {
+        return purchaseService.buyPurchase(uuid, username);
     }
 }

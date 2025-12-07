@@ -23,10 +23,12 @@ public class Category {
     private Boolean isDefault;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Purchases> purchases = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Category() {
