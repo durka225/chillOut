@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -40,6 +43,7 @@ import com.example.chillout.presentation.screen.viewmodel.SettingsScreenViewMode
 import com.example.chillout.presentation.ui.component.AddEditRangeDialog
 import com.example.chillout.presentation.ui.component.CardedDropdown
 import com.example.chillout.presentation.ui.component.CoolingRangeItem
+import com.example.chillout.presentation.ui.component.StyledButton
 
 
 @Composable
@@ -47,7 +51,6 @@ fun SettingsScreen(
     viewModel: SettingsScreenViewModel = viewModel()
 ) {
     var showRangeDialog by remember { mutableStateOf(false) }
-    val periodOptions = listOf("дней", "недель", "месяцев")
     val categoryOptions = listOf("Транспорт", "Электроника", "Одежда")
 
     LazyColumn(
@@ -103,6 +106,60 @@ fun SettingsScreen(
                 onOptionSelected = viewModel::updateSelectedCategory
             )
 
+        }
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { viewModel.toggleIncludeCurrentMoney() }
+                    .padding(vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Учитывать текущие накопления",
+                    fontSize = 18.sp
+                )
+                Checkbox(
+                    checked = viewModel.includeCurrentMoney,
+                    onCheckedChange = { isChecked ->
+                        viewModel.toggleIncludeCurrentMoney()
+                    },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = Color(0xFFFFCC00),
+                        uncheckedColor = Color.LightGray
+                    ),
+                    modifier = Modifier.size(40.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(40.dp))
+        }
+
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                StyledButton(
+                    onClick = {
+
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(0.45f)
+                        .height(55.dp),
+                    containerColor = Color.White,
+                    contentColor = Color.Red,
+
+                ) {
+                    Text(
+                        text = "Выход",
+                        fontSize = 18.sp,
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(40.dp))
         }
 
     }

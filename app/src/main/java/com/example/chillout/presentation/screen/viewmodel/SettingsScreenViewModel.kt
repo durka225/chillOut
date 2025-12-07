@@ -8,6 +8,8 @@ import com.example.chillout.presentation.screen.main.settings.CoolingRange
 
 class SettingsScreenViewModel : ViewModel() {
     private var nextRangeId = 5
+    var includeCurrentMoney by mutableStateOf(true)
+        private set
 
     var coolingRanges: List<CoolingRange> by mutableStateOf(getInitialCoolingRanges())
         private set
@@ -23,6 +25,10 @@ class SettingsScreenViewModel : ViewModel() {
 
     var selectedChannel: String by mutableStateOf("Telegram")
         private set
+
+    fun toggleIncludeCurrentMoney() {
+        includeCurrentMoney = !includeCurrentMoney
+    }
 
     fun addCoolingRange(range: CoolingRange) {
         if (coolingRanges.any { it.minAmount == range.minAmount && it.maxAmount == range.maxAmount }) return

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -22,6 +23,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -36,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,7 +47,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.chillout.App
 import com.example.chillout.R
 import com.example.chillout.presentation.navigation.Screen
-import com.example.chillout.presentation.screen.user_profile_setup.userProfileSetup
 import com.example.chillout.presentation.screen.viewmodel.NewBuyScreenViewModel
 import com.example.chillout.presentation.ui.component.NewCategoryDialog
 import com.example.chillout.presentation.ui.component.StyledButton
@@ -62,6 +64,16 @@ fun addCategory(newCategory: String) {
     if (newCategory.isNotBlank() && newCategory !in mutableCategoriesState.value) {
         mutableCategoriesState.value = mutableCategoriesState.value + newCategory
     }
+}
+
+@Composable
+fun ErrorMessage(text: String) {
+    Text(
+        text = text,
+        color = MaterialTheme.colorScheme.error,
+        style = MaterialTheme.typography.bodySmall,
+        modifier = Modifier.padding(start = 40.dp, top = 4.dp).fillMaxWidth()
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -114,15 +126,19 @@ fun NewBuyScreen(
                 value = viewModel.name,
                 onValueChange = viewModel::updateName,
                 shape = RoundedCornerShape(12.dp),
+                isError = viewModel.isNameError,
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
+                    focusedBorderColor = if (viewModel.isNameError) MaterialTheme.colorScheme.error else Color.Transparent,
+                    unfocusedBorderColor = if (viewModel.isNameError) MaterialTheme.colorScheme.error else Color.Transparent,
+                    errorBorderColor = MaterialTheme.colorScheme.error
                 ),
                 placeholder = {
                     Text(text = stringResource(id = R.string.name_buy))
                 }
             )
         }
+        if (viewModel.isNameError) ErrorMessage(text = "Введите название покупки")
+
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -139,15 +155,19 @@ fun NewBuyScreen(
                 value = viewModel.link,
                 onValueChange = viewModel::updateLink,
                 shape = RoundedCornerShape(12.dp),
+                isError = viewModel.isLinkError,
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
+                    focusedBorderColor = if (viewModel.isLinkError) MaterialTheme.colorScheme.error else Color.Transparent,
+                    unfocusedBorderColor = if (viewModel.isLinkError) MaterialTheme.colorScheme.error else Color.Transparent,
+                    errorBorderColor = MaterialTheme.colorScheme.error
                 ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
                 placeholder = {
                     Text(text = stringResource(id = R.string.link))
                 }
             )
         }
+        if (viewModel.isLinkError) ErrorMessage(text = "Введите ссылку на товар")
 
         Card(
             modifier = Modifier
@@ -165,15 +185,19 @@ fun NewBuyScreen(
                 value = viewModel.price,
                 onValueChange = viewModel::updatePrice,
                 shape = RoundedCornerShape(12.dp),
+                isError = viewModel.isPriceError,
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
+                    focusedBorderColor = if (viewModel.isPriceError) MaterialTheme.colorScheme.error else Color.Transparent,
+                    unfocusedBorderColor = if (viewModel.isPriceError) MaterialTheme.colorScheme.error else Color.Transparent,
+                    errorBorderColor = MaterialTheme.colorScheme.error
                 ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 placeholder = {
                     Text(text = stringResource(id = R.string.price))
                 }
             )
         }
+        if (viewModel.isPriceError) ErrorMessage(text = "Введите корректную цену (число > 0)")
 
         Card(
             modifier = Modifier
@@ -200,9 +224,11 @@ fun NewBuyScreen(
                     value = viewModel.categoryName,
                     onValueChange = { },
                     shape = RoundedCornerShape(12.dp),
+                    isError = viewModel.isCategoryError,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent
+                        focusedBorderColor = if (viewModel.isCategoryError) MaterialTheme.colorScheme.error else Color.Transparent,
+                        unfocusedBorderColor = if (viewModel.isCategoryError) MaterialTheme.colorScheme.error else Color.Transparent,
+                        errorBorderColor = MaterialTheme.colorScheme.error
                     ),
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(
@@ -218,7 +244,7 @@ fun NewBuyScreen(
                     expanded = isExpanded,
                     onDismissRequest = {
                         isExpanded = false
-                    }
+                    },
                 ) {
                     currentCategories.forEach { selectionOption ->
                         DropdownMenuItem(
@@ -232,6 +258,7 @@ fun NewBuyScreen(
                 }
             }
         }
+        if (viewModel.isCategoryError) ErrorMessage(text = "Выберите категорию")
 
         Text(
             text = stringResource(id = R.string.no_category),
@@ -245,6 +272,13 @@ fun NewBuyScreen(
 
         StyledButton(
             onClick = {
+                if (viewModel.validateInputs()) {
+                    Toast.makeText(context, "Покупка добавлена (Валидация пройдена)", Toast.LENGTH_SHORT).show()
+                    Log.d("NewBuyScreen", "Name: ${viewModel.name}, Price: ${viewModel.price}")
+                    onNavigateTo(Screen.Main)
+                } else {
+                    Toast.makeText(context, "Пожалуйста, заполните все поля корректно", Toast.LENGTH_SHORT).show()
+                }
             },
             containerColor = Color(0xFFFFFF11),
             contentColor = Color.Black,
@@ -268,8 +302,6 @@ fun NewBuyScreen(
         )
     }
 }
-
-
 
 @Composable
 @Preview (showBackground = true)
