@@ -35,11 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.chillout.R
-
-val PrimaryColor = Color(0xFF8A2BE2)
 val OnPrimaryColor = Color.White
 val BackgroundColor = Color(0xFF1E1E1E)
-val CenterButtonColor = Color(0xFFFFD700)
+
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -63,10 +61,10 @@ fun BottomNavigationBar(navController: NavController) {
             iconSize = 32.dp
         ),
         BottomNavItem(
-            iconRes = R.drawable.calculate,
-            title = R.string.calculator_buy,
+            iconRes = R.drawable.notif,
+            title = R.string.notif,
             route = MainScreenNavigationRoute.CalculatorBuy,
-            iconSize = 24.dp
+            iconSize = 27.dp
         ),
         BottomNavItem(
             iconRes = R.drawable.settings,
@@ -147,7 +145,7 @@ fun CenterNavigationItem(item: BottomNavItem, isSelected: Boolean) {
 
     Box(
         modifier = Modifier
-            .offset(y = (-7).dp)
+            .offset(y = (2).dp)
             .size(64.dp)
             .clip(CircleShape)
             .scale(pulse)

@@ -20,6 +20,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -75,25 +76,44 @@ fun AddEditRangeDialog(
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-
-                OutlinedTextField(
-                    value = minAmountInput,
-                    onValueChange = { minAmountInput = it.filter { char -> char.isDigit() } },
-                    label = { Text("От суммы (₽)") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth(),
+                Card(
+                    elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
                     shape = RoundedCornerShape(12.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                if (!isMaxUnlimited) {
+                ) {
                     OutlinedTextField(
-                        value = maxAmountInput,
-                        onValueChange = { maxAmountInput = it.filter { char -> char.isDigit() } },
-                        label = { Text("До суммы (₽)") },
+                        value = minAmountInput,
+                        onValueChange = { minAmountInput = it.filter { char -> char.isDigit() } },
+                        label = { Text("От суммы (₽)") },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().background(Color.White),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = Color.Transparent,
+                            unfocusedBorderColor = Color.Transparent
+                        ),
                         shape = RoundedCornerShape(12.dp)
                     )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                if (!isMaxUnlimited) {
+                    Card(
+                        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = maxAmountInput,
+                            onValueChange = {
+                                maxAmountInput = it.filter { char -> char.isDigit() }
+                            },
+                            label = { Text("До суммы (₽)") },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            modifier = Modifier.fillMaxWidth().background(Color.White),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Color.Transparent,
+                                unfocusedBorderColor = Color.Transparent
+                            ),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                    }
                 }
                 Row(
                     modifier = Modifier

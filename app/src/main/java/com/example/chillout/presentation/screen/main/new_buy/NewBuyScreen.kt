@@ -123,6 +123,31 @@ fun NewBuyScreen(
                 }
             )
         }
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 30.dp, start = 30.dp, end = 30.dp),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 15.dp
+            ),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White),
+                value = viewModel.link,
+                onValueChange = viewModel::updateLink,
+                shape = RoundedCornerShape(12.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent
+                ),
+                placeholder = {
+                    Text(text = stringResource(id = R.string.link))
+                }
+            )
+        }
 
         Card(
             modifier = Modifier

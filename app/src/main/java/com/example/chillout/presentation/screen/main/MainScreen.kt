@@ -10,14 +10,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.chillout.presentation.navigation.Screen
-import com.example.chillout.presentation.screen.main.calculator_buy.CalculatorBuyScreen
 import com.example.chillout.presentation.screen.main.history.HistoryScreen
 import com.example.chillout.presentation.screen.main.home.HomeScreen
-import com.example.chillout.presentation.screen.main.home.MoneyItem
-import com.example.chillout.presentation.screen.main.home.Purchase
 import com.example.chillout.presentation.screen.main.navigation.BottomNavigationBar
 import com.example.chillout.presentation.screen.main.navigation.MainScreenNavigationRoute
 import com.example.chillout.presentation.screen.main.new_buy.NewBuyScreen
+import com.example.chillout.presentation.screen.main.notification.NotificationScreen
 import com.example.chillout.presentation.screen.main.settings.SettingsScreen
 
 @Composable
@@ -46,7 +44,7 @@ fun MainScreen (
                 NewBuyScreen()
             }
             composable<MainScreenNavigationRoute.CalculatorBuy> {
-                CalculatorBuyScreen()
+                NotificationScreen()
             }
             composable<MainScreenNavigationRoute.Settings> {
                 SettingsScreen()

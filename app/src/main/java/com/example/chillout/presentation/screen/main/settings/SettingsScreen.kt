@@ -103,71 +103,8 @@ fun SettingsScreen(
                 onOptionSelected = viewModel::updateSelectedCategory
             )
 
-            Divider(color = Color.LightGray, thickness = 1.dp, modifier = Modifier.padding(vertical = 16.dp))
         }
 
-        item {
-            Text(
-                text = "Настройка уведомлений",
-                fontSize = 18.sp,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-
-            Text(
-                text = "Частота опроса",
-                fontSize = 16.sp,
-                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Card(
-                    modifier = Modifier
-                        .weight(0.4f)
-                        .padding(end = 8.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    OutlinedTextField(
-                        value = viewModel.pollCount,
-                        onValueChange = viewModel::updatePollCount,
-                        label = { Text("Кол-во") },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color.Transparent,
-                            unfocusedBorderColor = Color.Transparent
-                        ),
-                        singleLine = true
-                    )
-                }
-                Box(modifier = Modifier.weight(0.6f)) {
-                    CardedDropdown(
-                        label = "Период",
-                        options = periodOptions,
-                        selectedOption = viewModel.pollPeriod,
-                        onOptionSelected = viewModel::updatePollPeriod
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "Канал",
-                fontSize = 16.sp,
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
-            CardedDropdown(
-                label = "Канал",
-                options = listOf("Telegram", "Email", "Viber"),
-                selectedOption = viewModel.selectedChannel,
-                onOptionSelected = viewModel::updateSelectedChannel
-            )
-            Spacer(modifier = Modifier.height(40.dp))
-        }
     }
 
     if (showRangeDialog) {

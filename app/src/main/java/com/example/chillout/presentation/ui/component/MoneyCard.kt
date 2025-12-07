@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 fun MoneyCard(title: String, amount: Int) {
     Card(
         modifier = Modifier
-            .width(150.dp),
+            .width(170.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp

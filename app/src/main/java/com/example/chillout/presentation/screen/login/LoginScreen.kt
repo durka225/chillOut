@@ -46,12 +46,14 @@ import com.example.chillout.presentation.navigation.Screen
 import com.example.chillout.presentation.screen.viewmodel.LoginScreenViewModel
 import com.example.chillout.presentation.ui.component.StyledButton
 
+
 @Composable
 fun LoginScreen(
     onNavigateTo: (Screen) -> Unit = {},
     viewModel: LoginScreenViewModel = viewModel()
 ) {
     val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -129,11 +131,6 @@ fun LoginScreen(
                         if (ok) {
                             onNavigateTo(Screen.UserProfileSetup)
                         } else {
-                            Toast.makeText(
-                                context,
-                                "Ошибка входа или пользователь не найден",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             onNavigateTo(Screen.Main)
                         }
                     }

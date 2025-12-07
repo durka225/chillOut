@@ -35,7 +35,7 @@ fun HistoryScreen(
         Text(
             text = "История",
             fontSize = 32.sp,
-            modifier = Modifier.padding(start = 20.dp, top = 24.dp, bottom = 16.dp)
+            modifier = Modifier.padding(start = 20.dp, top = 20.dp, bottom = 16.dp)
         )
 
         purchases.forEach { purchase ->

@@ -1,5 +1,6 @@
 package com.example.chillout.presentation.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,11 +20,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.chillout.presentation.screen.main.settings.SettingsScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardedDropdown(
+
     label: String,
     options: List<String>,
     selectedOption: String,
@@ -46,6 +50,7 @@ fun CardedDropdown(
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(Color.White)
                     .menuAnchor(),
                 readOnly = true,
                 value = selectedOption.ifEmpty { label },

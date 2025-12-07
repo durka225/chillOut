@@ -9,6 +9,9 @@ class NewBuyScreenViewModel: ViewModel () {
     var name by mutableStateOf("")
         private set
 
+    var link by mutableStateOf("")
+        private set
+
     var price by mutableStateOf("")
         private set
 
@@ -18,6 +21,9 @@ class NewBuyScreenViewModel: ViewModel () {
 
     fun updateName(name: String){
         this.name = name
+    }
+    fun updateLink(link: String){
+        this.link = link
     }
     fun updatePrice (price: String){
         this.price = price
